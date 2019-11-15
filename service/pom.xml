@@ -19,6 +19,7 @@
             <groupId>be.cm.batodama.parkshark</groupId>
             <artifactId>domain</artifactId>
         </dependency>
+
     </dependencies>
 
 
