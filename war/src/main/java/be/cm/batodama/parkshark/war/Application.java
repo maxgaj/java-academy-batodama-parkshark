@@ -1,4 +1,4 @@
-package be.cm.batodama.parkshark;
+package be.cm.batodama.parkshark.war;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
