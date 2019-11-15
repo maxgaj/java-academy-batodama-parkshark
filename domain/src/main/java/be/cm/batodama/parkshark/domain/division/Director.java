@@ -19,4 +19,17 @@ public class Director {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Director first name: " + firstName + " last name: " + lastName;
+    }
 }
