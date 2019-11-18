@@ -18,4 +18,8 @@ public class DivisionService {
     public Division save(Division division) {
         return divisionRepository.save(division);
     }
+
+    public DivisionRepository getDivisionRepository() {
+        return divisionRepository;
+    }
 }

@@ -9,20 +9,29 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.annotation.Resource;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
 class DivisionRepositoryIntegrationTest {
 
-    @Autowired
+    @Resource
     private DivisionRepository divisionRepository;
-
 
     @Test
     void trueIsTrue() {
         Assertions.assertTrue(true);
     }
 
+    @Test
+    void name() {
+        Division division1 = new Division("Name", "Original Name", new Director("Seymour", "Skinner"));
+        divisionRepository.save(division1);
 
+        Division division2 = divisionRepository.findAll().get(0);
+        Assertions.assertEquals("Name",division2.getName());
+
+    }
 }

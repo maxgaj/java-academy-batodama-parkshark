@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DivisionController.class)
-public class DivisionControllerMockTest {
+public class DivisionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,4 +53,5 @@ public class DivisionControllerMockTest {
             throw new RuntimeException(e);
         }
     }
+
 }
