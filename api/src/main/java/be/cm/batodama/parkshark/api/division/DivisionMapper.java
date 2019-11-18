@@ -10,6 +10,6 @@ public class DivisionMapper {
     }
 
     public static DivisionDto mapToDivisionDto(Division division){
-        return new DivisionDto(division.getName(), division.getOriginalName(), division.getDirector().getFirstName(), division.getDirector().getLastName());
+        return new DivisionDto(division);
     }
 }
