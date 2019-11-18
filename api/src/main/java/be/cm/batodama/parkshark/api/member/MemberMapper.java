@@ -37,3 +37,21 @@ public class MemberMapper {
                 member.getRegistrationDate());
     }
 }
+
+/*
+// JSON TEST DATA :
+{
+	"id" : "10",
+	"firstName": "Danny",
+	"lastName":"Doubbel",
+	"streetAndNumber":"street",
+    "zipCode": "8900",
+    "city":"Esen",
+    "country":"Belgium",
+    "email":"danny@doubbel.be",
+    "phone":"0123456789",
+    "licencePlateNumber":"kra235",
+    "licencePlateCountry":"be",
+    "registrationDate":"2016-05-28T17:39:44.937"
+}
+ */
