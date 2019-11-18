@@ -15,7 +15,7 @@ public class DivisionService {
         this.divisionRepository = divisionRepository;
     }
 
-    public Division saveAndFlushDivision(Division division){
-        return divisionRepository.saveAndFlush(division);
+    public Division save(Division division) {
+        return divisionRepository.save(division);
     }
 }
