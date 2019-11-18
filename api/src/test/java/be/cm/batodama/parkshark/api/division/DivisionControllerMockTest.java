@@ -1,6 +1,6 @@
 package be.cm.batodama.parkshark.api.division;
 
-import be.cm.batodama.parkshark.api.ApiTestApplication;
+import be.cm.batodama.parkshark.ApiTestApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

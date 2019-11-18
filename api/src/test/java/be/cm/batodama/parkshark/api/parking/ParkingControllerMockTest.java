@@ -1,12 +1,13 @@
 package be.cm.batodama.parkshark.api.parking;
 
-import be.cm.batodama.parkshark.api.ApiTestApplication;
+import be.cm.batodama.parkshark.ApiTestApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,13 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = ApiTestApplication.class)
 @AutoConfigureMockMvc
-public class ParkingControllerMockTest {
+class ParkingControllerMockTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void givenParkingLotDto_whenCreatingParkingLot_thenReturnedParkingLotDtoEqualsOriginal() throws Exception {
+    @WithMockUser(authorities = "ROLE_MANAGER")
+    void givenParkingLotDto_whenCreatingParkingLot_thenReturnedParkingLotDtoEqualsOriginal() throws Exception {
 
         ParkingLotDto originalParkingLotDto = new ParkingLotDto("Test",
                 "UNDERGROUND",
