@@ -1,21 +1,24 @@
 package be.cm.batodama.parkshark.api.division;
 
 import be.cm.batodama.parkshark.domain.division.Division;
-import be.cm.batodama.parkshark.service.Division.DivisionService;
+import be.cm.batodama.parkshark.service.division.DivisionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping("/division")
+@RequestMapping("/divisions")
 public class DivisionController {
 
-    DivisionService divisionService;
     private static final Logger logger = LoggerFactory.getLogger(DivisionController.class);
     private static final String APPLICATION_JSON_VALUE = MediaType.APPLICATION_JSON_VALUE;
 
+    private final DivisionService divisionService;
 
     public DivisionController(DivisionService divisionService) {
         this.divisionService = divisionService;
@@ -24,8 +27,19 @@ public class DivisionController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public DivisionDto createDivision(@RequestBody DivisionDto divisionDto) {
-        Division division = divisionService.saveAndFlushDivision(DivisionMapper.mapToDivision(divisionDto));
+        Division division = divisionService.save(DivisionMapper.mapToDivision(divisionDto));
         logger.info("Division with name: " + division.getName() + ", for director with first name: " + division.getDirector().getFirstName() + " successfully created");
         return DivisionMapper.mapToDivisionDto(division);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<DivisionDto> getOverviewOfAllDivisions() {
+        return divisionService
+                .getDivisionRepository()
+                .findAll()
+                .stream()
+                .map(DivisionMapper::mapToDivisionDto)
+                .collect(Collectors.toList());
     }
 }

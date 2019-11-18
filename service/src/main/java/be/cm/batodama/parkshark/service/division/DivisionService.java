@@ -1,4 +1,4 @@
-package be.cm.batodama.parkshark.service.Division;
+package be.cm.batodama.parkshark.service.division;
 
 import be.cm.batodama.parkshark.domain.division.Division;
 import be.cm.batodama.parkshark.domain.division.DivisionRepository;
@@ -15,7 +15,11 @@ public class DivisionService {
         this.divisionRepository = divisionRepository;
     }
 
-    public Division saveAndFlushDivision(Division division){
-        return divisionRepository.saveAndFlush(division);
+    public Division save(Division division) {
+        return divisionRepository.save(division);
+    }
+
+    public DivisionRepository getDivisionRepository() {
+        return divisionRepository;
     }
 }
