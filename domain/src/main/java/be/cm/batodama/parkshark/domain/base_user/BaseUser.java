@@ -3,6 +3,8 @@ package be.cm.batodama.parkshark.domain.base_user;
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "BASE_USER")
 public class BaseUser {
 
     @Id
@@ -20,10 +22,17 @@ public class BaseUser {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public BaseUser() {
+    }
+
     public BaseUser(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getUsername() {

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +24,7 @@ public class DivisionController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+//    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     public DivisionDto createDivision(@RequestBody DivisionDto divisionDto) {
         Division division = divisionService.save(DivisionMapper.mapToDivision(divisionDto));
         logger.info("Division with name: " + division.getName() + ", for director with first name: " + division.getDirector().getFirstName() + " successfully created");
