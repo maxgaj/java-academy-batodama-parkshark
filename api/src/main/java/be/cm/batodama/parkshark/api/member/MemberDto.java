@@ -1,10 +1,10 @@
 package be.cm.batodama.parkshark.api.member;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class MemberDto {
+    public final String username;
+    public final String password;
     public final String firstName;
     public final String lastName;
     public final String streetAndNumber;
@@ -18,13 +18,16 @@ public class MemberDto {
     public final LocalDateTime registrationDate;
 
     public MemberDto(
-            String firstName,           String lastName,
+            String username, String password,
+            String firstName, String lastName,
             String streetAndNumber,
-            String zipCode,             String city,
+            String zipCode, String city,
             String country,
-            String email,               String phone,
-            String licencePlateNumber,  String licencePlateCountry,
+            String email, String phone,
+            String licencePlateNumber, String licencePlateCountry,
             LocalDateTime registrationDate) {
+        this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.streetAndNumber = streetAndNumber;

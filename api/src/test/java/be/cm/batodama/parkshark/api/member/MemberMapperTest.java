@@ -1,14 +1,10 @@
-package member;
+package be.cm.batodama.parkshark.api.member;
 
-import be.cm.batodama.parkshark.api.member.MemberDto;
-import be.cm.batodama.parkshark.api.member.MemberMapper;
 import be.cm.batodama.parkshark.domain.member.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class MemberMapperTest {
 
@@ -16,6 +12,8 @@ public class MemberMapperTest {
     void givenMemberDto_whenMappingToMember_thenAllFieldsAreEqual() {
 
         MemberDto memberDto = new MemberDto(
+                "jc",
+                "omg",
                 "Jesus",
                 "Chirst",
                 "Heavenlystreet 69",
@@ -43,6 +41,8 @@ public class MemberMapperTest {
     @Test
     void givenMember_whenMappingToMemberDto_thenAllFieldsAreEqual() {
         Member member = new Member(
+                "jc",
+                "omg",
                 "Jesus",
                 "Chirst",
                 "Heavenlystreet 69",

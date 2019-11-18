@@ -1,18 +1,20 @@
 package be.cm.batodama.parkshark.domain.member;
 
+import be.cm.batodama.parkshark.domain.base_user.BaseUser;
+import be.cm.batodama.parkshark.domain.base_user.Role;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "MEMBER")
-public class Member {
-    @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQUENCE")
-    @SequenceGenerator(sequenceName = "MEMBER_SEQUENCE", name = "MEMBER_SEQUENCE", allocationSize = 1)
-    private long id;
+public class Member extends BaseUser {
+//    @Id
+//    @Column(name = "ID")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQUENCE")
+//    @SequenceGenerator(sequenceName = "MEMBER_SEQUENCE", name = "MEMBER_SEQUENCE", allocationSize = 1)
+//    private long id;
 
     @Column(name = "FIRST_NAME")
     private String firstName;
@@ -43,7 +45,8 @@ public class Member {
     public Member() {
     }
 
-    public Member(String firstName, String lastName, String streetAndNumber, String zipCode, String city, String country, String email,String phone, String licencePlateNumber, String licencePlateCountry, LocalDateTime registrationDate) {
+    public Member(String username, String password, String firstName, String lastName, String streetAndNumber, String zipCode, String city, String country, String email,String phone, String licencePlateNumber, String licencePlateCountry, LocalDateTime registrationDate) {
+        super(username, password, Role.ROLE_MEMBER);
         this.firstName = firstName;
         this.lastName = lastName;
         this.streetAndNumber = streetAndNumber;
@@ -61,19 +64,20 @@ public class Member {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Member division = (Member) o;
-        return id == division.id;
+        Member member = (Member) o;
+        return getId() == member.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-        return  id + ": " + firstName + " " + lastName;
+        return  getId() + ": " + firstName + " " + lastName;
     }
+
 
     public String getFistName() {
         return firstName;
