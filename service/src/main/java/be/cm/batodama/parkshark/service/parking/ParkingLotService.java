@@ -5,6 +5,8 @@ import be.cm.batodama.parkshark.domain.parking.ParkingLotRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ParkingLotService {
@@ -17,6 +19,10 @@ public class ParkingLotService {
 
     public ParkingLot save(ParkingLot parkingLot){
         return parkingLotRepository.save(parkingLot);
+    }
+
+    public List<ParkingLot> findAll(){
+        return parkingLotRepository.findAll();
     }
 
 }
