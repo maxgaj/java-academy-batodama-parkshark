@@ -1,4 +1,4 @@
-package be.cm.batodama.parkshark.service.Division;
+package be.cm.batodama.parkshark.service.division;
 
 import be.cm.batodama.parkshark.domain.division.Division;
 import be.cm.batodama.parkshark.domain.division.DivisionRepository;
