@@ -10,10 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = ApiTestApplication.class)
@@ -45,18 +46,20 @@ class DivisionControllerIntegrationTest {
                 .andExpect(status().isCreated());
     }
 
-//    @Test
-//    void givenValidDivisionJson_whenCreatingAndGettinAllDivision_thenReturnCollectionWithProvidedValidDivision() throws Exception {
-//        MvcResult result = mockMvc.perform(post("/divisions")
-//                .content(validDivisionJson)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8")
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isCreated())
-//                .andReturn();
-//
-//
-//    }
+    @Test
+    @WithMockUser(authorities = "ROLE_MANAGER")
+    void givenValidDivisionJson_whenCreatingAndGettinAllDivision_thenReturnCollectionWithProvidedValidDivision() throws Exception {
+            mockMvc.perform(post("/divisions")
+                .content(validDivisionJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/divisions"))
+                .andExpect(content().string(containsString("Original Name")));
+        
+    }
 
     public static String asJsonString(final Object obj) {
         try {
