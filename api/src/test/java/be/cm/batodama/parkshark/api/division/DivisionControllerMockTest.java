@@ -2,7 +2,7 @@ package be.cm.batodama.parkshark.api.division;
 
 import be.cm.batodama.parkshark.domain.division.Director;
 import be.cm.batodama.parkshark.domain.division.Division;
-import be.cm.batodama.parkshark.service.Division.DivisionService;
+import be.cm.batodama.parkshark.service.division.DivisionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
