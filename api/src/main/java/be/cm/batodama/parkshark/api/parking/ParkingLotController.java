@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/parkinglot")
+@RequestMapping("/parkingLots")
 public class ParkingLotController {
 
     private final ParkingLotService parkingLotService;
