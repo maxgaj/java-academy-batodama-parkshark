@@ -71,3 +71,18 @@ public class MemberMapperTest {
 
 
 }
+/*
+{
+	"lastName":"Doubbel",
+	"firstName":"Danny",
+	"streetAndNumber":"street",
+    "zipCode": "8900",
+    "city":"Esen",
+    "country":"Belgium",
+    "email":"danny@doubbel.be",
+    "phone":"0123456789",
+    "licencePlateNumber":"kra235",
+    "licencePlateCountry":"be",
+    "registrationDate":"2016-05-28T17:39:44.937"
+}
+ */
