@@ -1,0 +1,73 @@
+package member;
+
+import be.cm.batodama.parkshark.api.member.MemberDto;
+import be.cm.batodama.parkshark.api.member.MemberMapper;
+import be.cm.batodama.parkshark.domain.member.Member;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+public class MemberMapperTest {
+
+    @Test
+    void givenMemberDto_whenMappingToMember_thenAllFieldsAreEqual() {
+
+        MemberDto memberDto = new MemberDto(
+                "Jesus",
+                "Chirst",
+                "Heavenlystreet 69",
+                "6666",
+                "Bethleham",
+                "Jerusalem",
+                "jezus@heaven.hell",
+                "0123456789",
+                "987654321",
+                "JZE",
+                LocalDateTime.now());
+
+        Member member = MemberMapper.mapToMember(memberDto);
+        Assertions.assertEquals(member.getFistName(), memberDto.firstName);
+        Assertions.assertEquals(member.getLastName(), memberDto.lastName);
+        Assertions.assertEquals(member.getStreetAndNumber(), memberDto.streetAndNumber);
+        Assertions.assertEquals(member.getZipCode(), memberDto.zipCode);
+        Assertions.assertEquals(member.getCity(), memberDto.city);
+        Assertions.assertEquals(member.getCountry(), memberDto.country);
+        Assertions.assertEquals(member.getEmail(), memberDto.email);
+        Assertions.assertEquals(member.getPhone(), memberDto.phone);
+        Assertions.assertEquals(member.getLicencePlateNumber(), memberDto.licencePlateNumber);
+        Assertions.assertEquals(member.getLicencePlateCountry(), memberDto.licencePlateCountry);
+    }
+    @Test
+    void givenMember_whenMappingToMemberDto_thenAllFieldsAreEqual() {
+        Member member = new Member(
+                "Jesus",
+                "Chirst",
+                "Heavenlystreet 69",
+                "6666",
+                "Bethleham",
+                "Jerusalem",
+                "jezus@heaven.hell",
+                "0123456789",
+                "987654321",
+                "JZE",
+                LocalDateTime.now());
+
+
+        MemberDto memberDto = MemberMapper.mapToMemberDto(member);
+        Assertions.assertEquals(member.getFistName(), memberDto.firstName);
+        Assertions.assertEquals(member.getLastName(), memberDto.lastName);
+        Assertions.assertEquals(member.getStreetAndNumber(), memberDto.streetAndNumber);
+        Assertions.assertEquals(member.getZipCode(), memberDto.zipCode);
+        Assertions.assertEquals(member.getCity(), memberDto.city);
+        Assertions.assertEquals(member.getCountry(), memberDto.country);
+        Assertions.assertEquals(member.getEmail(), memberDto.email);
+        Assertions.assertEquals(member.getPhone(), memberDto.phone);
+        Assertions.assertEquals(member.getLicencePlateNumber(), memberDto.licencePlateNumber);
+        Assertions.assertEquals(member.getLicencePlateCountry(), memberDto.licencePlateCountry);
+    }
+
+
+}
