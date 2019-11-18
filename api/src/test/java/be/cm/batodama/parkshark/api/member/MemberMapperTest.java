@@ -12,6 +12,8 @@ public class MemberMapperTest {
     void givenMemberDto_whenMappingToMember_thenAllFieldsAreEqual() {
 
         MemberDto memberDto = new MemberDto(
+                "jc",
+                "omg",
                 "Jesus",
                 "Chirst",
                 "Heavenlystreet 69",
@@ -39,6 +41,8 @@ public class MemberMapperTest {
     @Test
     void givenMember_whenMappingToMemberDto_thenAllFieldsAreEqual() {
         Member member = new Member(
+                "jc",
+                "omg",
                 "Jesus",
                 "Chirst",
                 "Heavenlystreet 69",
