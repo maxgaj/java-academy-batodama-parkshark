@@ -5,6 +5,8 @@ import be.cm.batodama.parkshark.domain.member.Member;
 public class MemberMapper {
     public static Member mapToMember(MemberDto memberDto) {
         return new Member(
+                memberDto.username,
+                memberDto.password,
                 memberDto.firstName,
                 memberDto.lastName,
                 memberDto.streetAndNumber,
@@ -20,6 +22,8 @@ public class MemberMapper {
 
     public static MemberDto mapToMemberDto(Member member) {
         return new MemberDto(
+                member.getUsername(),
+                member.getPassword(),
                 member.getFistName(),
                 member.getLastName(),
                 member.getStreetAndNumber(),

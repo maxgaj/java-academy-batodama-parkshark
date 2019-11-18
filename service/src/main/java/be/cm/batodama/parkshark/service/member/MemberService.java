@@ -6,6 +6,8 @@ import be.cm.batodama.parkshark.domain.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class MemberService {
@@ -14,7 +16,16 @@ public class MemberService {
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
-    public Member saveAndFlushDivision(Member member){
+    public Member saveAndFlushMember(Member member){
         return memberRepository.saveAndFlush(member);
+    }
+
+
+    public List<Member> getAllMembers() {
+        return memberRepository.findAll();
+    }
+
+    public void addMember(Member member) {
+        memberRepository.save(member);
     }
 }
