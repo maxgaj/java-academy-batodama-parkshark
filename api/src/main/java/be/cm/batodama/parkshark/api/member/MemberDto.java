@@ -40,4 +40,26 @@ public class MemberDto {
         this.licencePlateCountry = licencePlateCountry;
         this.registrationDate = registrationDate;
     }
+    public MemberDto(
+            String username, String password,
+            String firstName, String lastName,
+            String streetAndNumber,
+            String zipCode, String city,
+            String country,
+            String email, String phone,
+            String licencePlateNumber, String licencePlateCountry) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.streetAndNumber = streetAndNumber;
+        this.zipCode = zipCode;
+        this.city = city;
+        this.country = country;
+        this.email = email;
+        this.phone = phone;
+        this.licencePlateNumber = licencePlateNumber;
+        this.licencePlateCountry = licencePlateCountry;
+        this.registrationDate = LocalDateTime.now();
+    }
 }

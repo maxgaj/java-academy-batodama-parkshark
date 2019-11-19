@@ -4,13 +4,12 @@ package be.cm.batodama.parkshark.api.member;
 import be.cm.batodama.parkshark.domain.member.Member;
 import be.cm.batodama.parkshark.domain.member.MemberRepository;
 import be.cm.batodama.parkshark.service.member.MemberService;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +28,7 @@ public class MemberController {
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public MemberDto createMember(@RequestBody MemberDto memberDto) {
@@ -38,33 +38,32 @@ public class MemberController {
     }
 
     // for getting members, use no authentification
-    @GetMapping(path = "") //GET Should the collection of members.
-    public List<MemberDto> getAllMembers() {
-        List<MemberDto> memberDtoList =
-                memberService.getAllMembers()
-                        .stream()
-                            .map(MemberMapper::mapToMemberDto).collect(Collectors.toList());
-        return memberDtoList;
+    @GetMapping //GET Should the collection of members.
+    public List<SmallMemberDto> getAllMembers() {
+        return memberService.getAllMembers()
+                .stream()
+                .map(MemberMapper::mapToSmallMemberDto)
+                .collect(Collectors.toList());
     }
 
 
-    @PostMapping(path = "post",consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "post", consumes = "application/json", produces = "application/json")
     //POST create and add a new member to the collection
     public void addMember(@RequestBody MemberDto memberDto) {
 
         memberService.addMember(MemberMapper.mapToMember(memberDto));
     }
+
     // usage localhost:8080/members/get?ID=1
     // in postman give in params key ID and value 1 or ....
     @GetMapping(path = "get") //GET Should the collection of members.
     @ResponseBody
-    public MemberDto getMembers(@RequestParam(required = true) long ID) {
+    public MemberDto getMemberById(@RequestParam(required = true) long ID) {
         System.out.println("here in the post");
         MemberDto memberDto =
                 MemberMapper.mapToMemberDto(memberService.getMember(ID));
         return memberDto;
     }
-
 
 
 }
