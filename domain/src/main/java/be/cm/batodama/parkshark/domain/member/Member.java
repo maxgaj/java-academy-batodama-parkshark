@@ -125,7 +125,10 @@ public class Member extends BaseUser {
 
 /*
 JSON DATA FOR POSTMAN localhost:8080/members/post
+zet authorization Username to member and password 1234
 {
+	"username" : "willekeurig",
+	"password" : "willekeurig",
 	"lastName":"Doubbel",
 	"firstName":"Danny",
 	"streetAndNumber":"street",
