@@ -12,4 +12,7 @@ public interface DivisionRepository extends JpaRepository<Division, Long> {
 
     @Override
     List<Division> findAll();
+
+    @Override
+    Division getOne(Long aLong);
 }
