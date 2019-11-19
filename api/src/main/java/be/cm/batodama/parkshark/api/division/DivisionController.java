@@ -56,6 +56,19 @@ public class DivisionController {
                 .collect(Collectors.toList());
     }
 
+
+    // usage localhost:8080/divisions/get?ID=1
+    // in postman give in params key ID and value 1 or ....
+    @GetMapping(path = "get") //GET Should the collection of members.
+    @ResponseBody
+    public DivisionDto getDivision(@RequestParam(required = true) long ID) {
+        System.out.println("here in the post");
+        DivisionDto divisionDto =
+                DivisionMapper.mapToDivisionDto(divisionService.getDivision(ID));
+        return divisionDto;
+    }
+
+
     @ExceptionHandler(ConstraintViolationException.class)
     private void constraintViolationExceptionHandler(ConstraintViolationException ex, HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), ex.getMessage());

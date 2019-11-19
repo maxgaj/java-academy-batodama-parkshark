@@ -22,6 +22,21 @@ public class MemberRepositorayIntegrationTest {
 
     @Test
     void onCreateMemberInRepositoryCheckAllFieldnamesWhenGettingTheMemberOutOfTheReposisitory() {
+        /*
+        // deleting the repository
+        long teller = 0;
+        do {
+            Member member = memberRepository.getOne(teller);
+            if (member != null) {
+                System.out.println("DELETE *****************************");
+                memberRepository.delete(member);
+            }
+            teller++;
+        } while (teller < 100);
+        */
+
+        // first part of the test
+        // saving to the repository
         Member member1 =
                 new Member(
                         "myUserName",
@@ -40,7 +55,10 @@ public class MemberRepositorayIntegrationTest {
                 );
         memberRepository.save(member1);
 
-        Member member2 = memberRepository.findAll().get(0);
+        // second part of the test
+        // taking first member from the repository by the get All
+        Member member2 = memberRepository.findAll().get(1);
+
         Assertions.assertEquals("myFirstName",member2.getFistName());
         Assertions.assertEquals("myLastName",member2.getLastName());
         Assertions.assertEquals("myStreetAndNumber",member2.getStreetAndNumber());
@@ -54,5 +72,9 @@ public class MemberRepositorayIntegrationTest {
         assertEquals(11L, member2.getRegistrationDate().getMonthValue());
         assertEquals(2019L, member2.getRegistrationDate().getYear());
 
+        // third part of the test
+        // get one member by ID from the repository
+        Member member3 = memberRepository.getOne(member2.getId());
+        Assertions.assertTrue(member2.equals(member3));
     }
 }

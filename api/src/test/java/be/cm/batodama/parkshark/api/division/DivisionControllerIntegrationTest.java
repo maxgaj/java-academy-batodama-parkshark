@@ -25,6 +25,8 @@ class DivisionControllerIntegrationTest {
     private MockMvc mockMvc;
 
     private String validDivisionJson;
+    private String invalidDivisionJson;
+    private String subdivisionJson;
 
     @BeforeEach
     void setUp() {
@@ -34,6 +36,22 @@ class DivisionControllerIntegrationTest {
                 "Seymour",
                 "Skinner",
                 null));
+        invalidDivisionJson = "  {\n" +
+                "    \"name\": \"Invalid\",\n";
+        subdivisionJson = "  {\n" +
+                "    \"firstName\": \"string\",\n" +
+                "    \"id\": 0,\n" +
+                "    \"lastName\": \"string\",\n" +
+                "    \"name\": \"string\",\n" +
+                "    \"originalName\": \"string\",\n" +
+                "    \"parent\": {\n" +
+                "      \"director\": {\n" +
+                "        \"firstName\": \"string\",\n" +
+                "        \"lastName\": \"string\"\n" +
+                "      },\n" +
+                "      \"id\": 1\n" +
+                "    }\n" +
+                "  }";
     }
 
     @Test
@@ -49,17 +67,35 @@ class DivisionControllerIntegrationTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
-    void givenValidDivisionJson_whenCreatingAndGettinAllDivision_thenReturnCollectionWithProvidedValidDivision() throws Exception {
-            mockMvc.perform(post("/divisions")
+    void givenValidDivisionJson_whenCreatingAndGettingAllDivisions_thenReturnCollectionWithProvidedValidDivisions() throws Exception {
+        mockMvc.perform(post("/divisions")
                 .content(validDivisionJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+        mockMvc.perform(post("/divisions")
+                .content(subdivisionJson)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
         mockMvc.perform(get("/divisions"))
+                .andExpect(content().string(containsString("string")))
                 .andExpect(content().string(containsString("Original Name")));
 
+    }
+
+    @Test
+    @WithMockUser(authorities = "ROLE_MANAGER")
+    void givenInvalidDivisionDto_whenCreatingADivision_thenConstraintViolationExceptionIsThrown() throws Exception {
+        mockMvc.perform(post("/divisions")
+                .content(invalidDivisionJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 
     public static String asJsonString(final Object obj) {
