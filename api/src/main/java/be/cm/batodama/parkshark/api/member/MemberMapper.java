@@ -36,6 +36,16 @@ public class MemberMapper {
                 member.getLicencePlateCountry(),
                 member.getRegistrationDate());
     }
+
+    public static SmallMemberDto mapToSmallMemberDto(Member member){
+        return new SmallMemberDto(
+                member.getId(),
+                member.getFistName(),
+                member.getLastName(),
+                member.getLicencePlateNumber(),
+                member.getEmail(),
+                member.getRegistrationDate());
+    }
 }
 
 /*
