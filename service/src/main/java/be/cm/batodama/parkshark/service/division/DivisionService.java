@@ -22,4 +22,8 @@ public class DivisionService {
     public DivisionRepository getDivisionRepository() {
         return divisionRepository;
     }
+
+    public Division getDivision(long id) {
+        return divisionRepository.getOne(id);
+    }
 }
