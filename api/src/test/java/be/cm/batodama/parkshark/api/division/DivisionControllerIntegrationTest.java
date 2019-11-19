@@ -32,7 +32,8 @@ class DivisionControllerIntegrationTest {
                 "Name",
                 "Original Name",
                 "Seymour",
-                "Skinner"));
+                "Skinner",
+                null));
     }
 
     @Test

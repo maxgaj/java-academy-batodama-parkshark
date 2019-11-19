@@ -22,13 +22,19 @@ public class Division {
     @Embedded
     private Director director;
 
+    @ManyToOne
+    @JoinColumn(name = "PARENT_ID")
+    private Division parent;
+
+
     public Division() {
     }
 
-    public Division(String name, String originalName, Director director) {
+    public Division(String name, String originalName, Director director,Division parent) {
         this.name = name;
         this.originalName = originalName;
         this.director = director;
+        this.parent = parent;
     }
 
     public String getName() {
@@ -45,6 +51,10 @@ public class Division {
 
     public long getId() {
         return id;
+    }
+
+    public Division getParent() {
+        return parent;
     }
 
     @Override

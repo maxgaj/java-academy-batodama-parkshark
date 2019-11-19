@@ -36,6 +36,7 @@ public class DivisionController {
 
     @GetMapping
     @ResponseBody
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     public List<DivisionDto> getOverviewOfAllDivisions() {
         return divisionService
                 .getDivisionRepository()
