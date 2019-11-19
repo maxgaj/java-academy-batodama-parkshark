@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ApiTestApplication.class)
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
 class ParkingControllerIntegrationTest {
 
     @Autowired
@@ -42,7 +44,7 @@ class ParkingControllerIntegrationTest {
         ParkingLotDto originalParkingLotDto = new ParkingLotDto("Test", "UNDERGROUND",
                 new AddressDto("Street Test", "1", new PostCodeDto("Post Test", "Leuven")),
                 50,
-                1,
+                3,
                 100);
 
         mockMvc.perform(post("/parkingLots")
