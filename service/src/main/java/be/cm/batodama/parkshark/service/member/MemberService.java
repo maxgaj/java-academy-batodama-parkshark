@@ -32,7 +32,6 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-
     public Member getMember(long ID) {
         return memberRepository.getOne(ID);
     }
