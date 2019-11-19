@@ -67,7 +67,7 @@ class DivisionControllerIntegrationTest {
 
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
-    void givenValidDivisionJson_whenCreatingAndGettinAllDivision_thenReturnCollectionWithProvidedValidDivision() throws Exception {
+    void givenValidDivisionJson_whenCreatingAndGettingAllDivisions_thenReturnCollectionWithProvidedValidDivisions() throws Exception {
         mockMvc.perform(post("/divisions")
                 .content(validDivisionJson)
                 .contentType(MediaType.APPLICATION_JSON)
