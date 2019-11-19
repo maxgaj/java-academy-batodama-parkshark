@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/parkingLots")
 public class ParkingLotController {
@@ -22,9 +25,21 @@ public class ParkingLotController {
         this.parkingLotMapper = parkingLotMapper;
     }
 
+    @GetMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<ParkingLotDto> getAllParkingLots() {
+        List<ParkingLot> parkingLots = parkingLotService.findAll();
+        logger.info(parkingLots.size() + " where found");
+        List<ParkingLotDto> parkingLotDtos = new ArrayList<>();
+        for (ParkingLot parkingLot : parkingLots) {
+            parkingLotDtos.add(parkingLotMapper.mapToParkingLotDto(parkingLot));
+        }
+        return parkingLotDtos;
+    }
+
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ParkingLotDto createDivision(@RequestBody ParkingLotDto parkingLotDto) {
+    public ParkingLotDto createParkingLot(@RequestBody ParkingLotDto parkingLotDto) {
         ParkingLot parkingLot = parkingLotService.save(parkingLotMapper.mapToParkingLot(parkingLotDto));
         logger.info("Parking lot with name: " + parkingLot.getParkingName() + " successfully created");
         return parkingLotMapper.mapToParkingLotDto(parkingLot);
