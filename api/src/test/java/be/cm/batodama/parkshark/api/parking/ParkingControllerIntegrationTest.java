@@ -110,7 +110,7 @@ class ParkingControllerIntegrationTest {
                 new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
                 new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))), 10));
 
-        mockMvc.perform(get("/parkingLots/3")
+        mockMvc.perform(get("/parkingLots/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))

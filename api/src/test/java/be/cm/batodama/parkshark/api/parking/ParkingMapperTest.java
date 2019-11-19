@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@SpringBootTest(classes = ApiTestApplication.class)
 class ParkingMapperTest {
 
     @Test
