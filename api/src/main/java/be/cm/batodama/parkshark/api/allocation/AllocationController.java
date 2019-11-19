@@ -42,7 +42,7 @@ public class AllocationController {
     }
 
     @ApiOperation(value="Starts Parking spot allocation")
-    @PostMapping(params = {"parkingId", "licensePlate"}, consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(params = {"parkingId", "licensePlate"}, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ROLE_MEMBER')")
     public StartedAllocationsDto startAllocation(@RequestParam String parkingId, @RequestParam String licensePlate){

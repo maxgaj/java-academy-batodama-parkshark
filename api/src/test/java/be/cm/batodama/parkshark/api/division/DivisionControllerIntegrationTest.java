@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
@@ -19,12 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = ApiTestApplication.class)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 class DivisionControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     private String validDivisionJson;
+    private String validDivisionJson2;
     private String invalidDivisionJson;
     private String subdivisionJson;
 
@@ -32,6 +35,12 @@ class DivisionControllerIntegrationTest {
     void setUp() {
         validDivisionJson = asJsonString(new DivisionDto(
                 "Name",
+                "Original Name",
+                "Seymour",
+                "Skinner",
+                null));
+        validDivisionJson2 = asJsonString(new DivisionDto(
+                "Name2",
                 "Original Name",
                 "Seymour",
                 "Skinner",
@@ -69,7 +78,7 @@ class DivisionControllerIntegrationTest {
     @WithMockUser(authorities = "ROLE_MANAGER")
     void givenValidDivisionJson_whenCreatingAndGettingAllDivisions_thenReturnCollectionWithProvidedValidDivisions() throws Exception {
         mockMvc.perform(post("/divisions")
-                .content(validDivisionJson)
+                .content(validDivisionJson2)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))

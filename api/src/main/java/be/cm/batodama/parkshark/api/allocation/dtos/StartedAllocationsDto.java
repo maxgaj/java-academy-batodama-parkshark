@@ -17,4 +17,24 @@ public class StartedAllocationsDto {
         this.licensePlate = licensePlate;
         this.startTime = startTime;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public AllocationMemberDto getMemberDto() {
+        return memberDto;
+    }
+
+    public AllocationParkingLotDto getParkingLotDto() {
+        return parkingLotDto;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
 }

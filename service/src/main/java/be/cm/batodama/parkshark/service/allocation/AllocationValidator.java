@@ -8,9 +8,7 @@ public class AllocationValidator {
 
     public boolean validate(Allocation allocation){
         return memberIsNotNull(allocation) &&
-                memberhasId(allocation) &&
                 parkingLotIsNotNull(allocation) &&
-                parkingLotHasId(allocation) &&
                 licensePlateIsNotNull(allocation) &&
                 licensePlateIsAccepted(allocation) &&
                 parkingLotIsNotFull(allocation) &&
@@ -21,18 +19,8 @@ public class AllocationValidator {
         return allocation.getMember() != null;
     }
 
-    private boolean memberhasId(Allocation allocation) {
-        return allocation.getMember().getId() != 0;
-    }
-
     private boolean parkingLotIsNotNull(Allocation allocation) {
         return allocation.getParkingLot() != null;
-    }
-
-    private boolean parkingLotHasId(Allocation allocation) {
-        return true;
-        //TODO
-//        return allocation.getParkingLot().getId();
     }
 
     private boolean licensePlateIsNotNull(Allocation allocation) {
@@ -40,6 +28,8 @@ public class AllocationValidator {
     }
 
     private boolean licensePlateIsAccepted(Allocation allocation) {
+        return allocation.getLicencePlateNumber().equals(allocation.getMember().getLicencePlateNumber());
+        //TODO add level
     }
 
     private boolean parkingLotIsNotFull(Allocation allocation) {

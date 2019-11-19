@@ -13,4 +13,6 @@ public interface ParkingLotRepository extends JpaRepository<ParkingLot, Long> {
     @Override
     List<ParkingLot> findAll();
 
+    @Override
+    Optional<ParkingLot> findById(Long aLong);
 }

@@ -27,7 +27,7 @@ public class AllocationCreator {
         if (member == null){
             throw new IllegalArgumentException(format("Invalid username: username %s not found", username));
         }
-        ParkingLot parkingLot = parkingLotRepository.findById(Long.getLong(parkingId))
+        ParkingLot parkingLot = parkingLotRepository.findById(Long.parseLong(parkingId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Parking lot Id"));
         return new Allocation(member, parkingLot, licensePlate);
     }

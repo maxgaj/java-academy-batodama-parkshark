@@ -27,7 +27,7 @@ public class Allocation {
     @NotNull
     private ParkingLot parkingLot;
 
-    @Column(name = "LICENCE_PLATE_NUMBER")
+    @Column(name = "LICENSE_PLATE_NUMBER")
     @NotNull
     private String licencePlateNumber;
 
