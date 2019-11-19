@@ -28,7 +28,7 @@ class DivisionRepositoryIntegrationTest {
     @Test
     void makeADivisionAndSaveToTheRepositoryAndConfirmDataInsideRepositoryIsEqualToInputData() {
         // first part of the test create a division and save in the repository
-        Division division1 = new Division("Name", "Original Name", new Director("Seymour", "Skinner"));
+        Division division1 = new Division( "Name", "Original Name", new Director("Seymour", "Skinner"),null);
         divisionRepository.save(division1);
 
         // second part of the test get first division out of the repository through the get all method
@@ -42,7 +42,7 @@ class DivisionRepositoryIntegrationTest {
 
     @Test
     void getOneDivisionOutOfTheRepositoryByID() {
-        Division division1 = new Division("Name", "Original Name", new Director("Seymour", "Skinner"));
+        Division division1 = new Division("Name", "Original Name", new Director("Seymour", "Skinner"),null);
         divisionRepository.save(division1);
 
         Division division2 = divisionRepository.findAll().get(0);
