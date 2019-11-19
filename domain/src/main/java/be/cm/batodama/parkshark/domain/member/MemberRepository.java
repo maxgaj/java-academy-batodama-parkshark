@@ -8,6 +8,8 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
 
     @Override
     Member getOne(Long aLong);
+
+    Member findOneByUsername(String username);
 }
 
 
