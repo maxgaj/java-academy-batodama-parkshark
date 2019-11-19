@@ -31,38 +31,41 @@ public class MemberController {
     }
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public MemberDto createDivision(@RequestBody MemberDto memberDto) {
+    public MemberDto createMember(@RequestBody MemberDto memberDto) {
         Member member = memberService.saveAndFlushMember(MemberMapper.mapToMember(memberDto));
         logger.info("Member name: " + member.getFistName() + " " + member.getLastName() + " successfully created");
         return MemberMapper.mapToMemberDto(member);
     }
 
-
+    // for getting members, use no authentification
     @GetMapping(path = "") //GET Should the collection of members.
     public List<MemberDto> getAllMembers() {
-
-
         List<MemberDto> memberDtoList =
                 memberService.getAllMembers()
                         .stream()
                             .map(MemberMapper::mapToMemberDto).collect(Collectors.toList());
         return memberDtoList;
     }
+
+
     @PostMapping(path = "post",consumes = "application/json", produces = "application/json")
     //POST create and add a new member to the collection
     public void addMember(@RequestBody MemberDto memberDto) {
-        System.out.println("here in the post");
+
         memberService.addMember(MemberMapper.mapToMember(memberDto));
     }
-    /*
-    @GetMapping(path = "") //GET Should the collection of members.
-    public MemberDto getMembers() {
+    // usage localhost:8080/members/get?ID=1
+    // in postman give in params key ID and value 1 or ....
+    @GetMapping(path = "get") //GET Should the collection of members.
+    @ResponseBody
+    public MemberDto getMembers(@RequestParam(required = true) long ID) {
+        System.out.println("here in the post");
         MemberDto memberDto =
-                MemberMapper.mapToMemberDto(memberService.getMember());
+                MemberMapper.mapToMemberDto(memberService.getMember(ID));
         return memberDto;
     }
 
-     */
+
 
 }
 
