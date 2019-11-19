@@ -1,6 +1,8 @@
 package be.cm.batodama.parkshark.api.parking;
 
-public class ParkingLotDto {
+public class ParkingLotDtoToReturn {
+
+    public long id;
 
     public final String parkingName;
 
@@ -10,16 +12,17 @@ public class ParkingLotDto {
 
     public final long parkingMaxSize;
 
-    public final long parkingLotContactPersonId;
+    public final ParkingLotContactPersonDto parkingLotContactPersonDto;
 
     public final long allocationPricePerHour;
 
-    public ParkingLotDto(String parkingName, String parkingCategory, AddressDto address, long parkingMaxSize, long parkingLotContactPersonId, long allocationPricePerHour) {
+    public ParkingLotDtoToReturn(long id, String parkingName, String parkingCategory, AddressDto address, long parkingMaxSize, ParkingLotContactPersonDto parkingLotContactPersonDto, long allocationPricePerHour) {
+        this.id = id;
         this.parkingName = parkingName;
         this.parkingCategory = parkingCategory;
         this.address = address;
         this.parkingMaxSize = parkingMaxSize;
-        this.parkingLotContactPersonId = parkingLotContactPersonId;
+        this.parkingLotContactPersonDto = parkingLotContactPersonDto;
         this.allocationPricePerHour = allocationPricePerHour;
     }
 }

@@ -30,10 +30,15 @@ class ParkingMapperTest {
                             new Address("Street Test", "1",
                                 new PostCode("Post Test", "Leuven"))), 100);
 
-        ParkingLotDto parkingLotDto = parkingLotMapper.mapToParkingLotDto(parkingLot);
-        Assertions.assertEquals(parkingLotDto.parkingName, parkingLot.getParkingName());
-        Assertions.assertEquals(parkingLotDto.parkingCategory, parkingLot.getParkingCategory());
-        Assertions.assertEquals(parkingLotDto.parkingMaxSize, parkingLot.getParkingMaxSize());
-        Assertions.assertEquals(parkingLotDto.address.streetName, parkingLot.getAddress().getStreetName());
+        ParkingLotDtoToReturn parkingLotDtoToReturn = parkingLotMapper.mapToParkingLotDtoToReturn(parkingLot);
+        Assertions.assertEquals(parkingLotDtoToReturn.id, parkingLot.getId());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingName, parkingLot.getParkingName());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingCategory, parkingLot.getParkingCategory());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingMaxSize, parkingLot.getParkingMaxSize());
+        Assertions.assertEquals(parkingLotDtoToReturn.address.streetName, parkingLot.getAddress().getStreetName());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingLotContactPersonDto.name, parkingLot.getParkingLotContactPerson().getName());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingLotContactPersonDto.phoneNumber, parkingLot.getParkingLotContactPerson().getPhoneNumber());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingLotContactPersonDto.eMail, parkingLot.getParkingLotContactPerson().geteMail());
+        Assertions.assertEquals(parkingLotDtoToReturn.parkingLotContactPersonDto.telephoneNumber, parkingLot.getParkingLotContactPerson().getTelephoneNumber());
     }
 }
