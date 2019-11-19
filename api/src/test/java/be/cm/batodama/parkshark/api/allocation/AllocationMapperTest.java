@@ -19,8 +19,8 @@ class AllocationMapperTest {
 
     @BeforeEach
     void setUp() {
-        validMember = new Member("username", "", "", "", "","","","","", "", "", "", LocalDateTime.now());
-        validParkingLot = new ParkingLot("parkingName", ParkingLotCategory.ABOVE_GROUND, new Address("", "", new PostCode("", "")), 0, new ParkingLotContactPerson("", "", "", "", new Address("", "", new PostCode("", ""))), 0);
+        validMember = new Member("username", "", "", "", "","","","","coucou@hello.be", "", "", "", LocalDateTime.now());
+        validParkingLot = new ParkingLot("parkingName", ParkingLotCategory.ABOVE_GROUND, new Address("", "", new PostCode("", "")), 0, new ParkingLotContactPerson("", "coucou@hello.be", "", "", new Address("", "", new PostCode("", ""))), 0);
         validAllocation = new Allocation(validMember, validParkingLot, "1ABC123");
     }
 
