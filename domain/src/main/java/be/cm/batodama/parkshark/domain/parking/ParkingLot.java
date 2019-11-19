@@ -44,6 +44,10 @@ public class ParkingLot {
         this.allocationPricePerHour = allocationPricePerHour;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getParkingName() {
         return parkingName;
     }
