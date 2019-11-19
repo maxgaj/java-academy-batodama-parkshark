@@ -16,25 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-public class MemberRepositorayIntegrationTest {
+public class MemberRepositoryIntegrationTest {
     @Resource
     private MemberRepository memberRepository;
 
     @Test
     void onCreateMemberInRepositoryCheckAllFieldnamesWhenGettingTheMemberOutOfTheReposisitory() {
-        /*
-        // deleting the repository
-        long teller = 0;
-        do {
-            Member member = memberRepository.getOne(teller);
-            if (member != null) {
-                System.out.println("DELETE *****************************");
-                memberRepository.delete(member);
-            }
-            teller++;
-        } while (teller < 100);
-        */
-
         // first part of the test
         // saving to the repository
         Member member1 =
