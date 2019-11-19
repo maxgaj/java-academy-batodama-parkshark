@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,6 +37,18 @@ public class ParkingLotController {
                 .map(parkingLotMapper::mapToParkingLotDtoToReturn)
                 .collect(Collectors.toList());
         return parkingLotDtos;
+    }
+
+    @GetMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ParkingLotDtoToReturn getOneParkingLotById(@PathVariable long id) {
+        try {
+            ParkingLotDtoToReturn parkingLotDtoToReturn = parkingLotMapper.mapToParkingLotDtoToReturn(parkingLotService.findById(id));
+            return parkingLotDtoToReturn;
+        } catch (Exception ex) {
+            logger.info(ex.getMessage());
+            return null;
+        }
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
