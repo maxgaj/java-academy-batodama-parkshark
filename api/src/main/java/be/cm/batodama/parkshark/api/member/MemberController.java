@@ -23,7 +23,7 @@ public class MemberController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public MemberDto createDivision(@RequestBody MemberDto memberDto) {
-        Member member = memberService.saveAndFlushDivision(MemberMapper.mapToMember(memberDto));
+        Member member = memberService.saveAndFlushMember(MemberMapper.mapToMember(memberDto));
         logger.info("Member name: " + member.getFistName() + " " + member.getLastName() + " successfully created");
         return MemberMapper.mapToMemberDto(member);
     }
