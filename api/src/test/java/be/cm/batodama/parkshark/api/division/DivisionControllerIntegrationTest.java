@@ -58,7 +58,7 @@ class DivisionControllerIntegrationTest {
 
         mockMvc.perform(get("/divisions"))
                 .andExpect(content().string(containsString("Original Name")));
-        
+
     }
 
     public static String asJsonString(final Object obj) {
