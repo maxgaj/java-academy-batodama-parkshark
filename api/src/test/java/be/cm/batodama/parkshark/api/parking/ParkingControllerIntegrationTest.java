@@ -90,6 +90,7 @@ class ParkingControllerIntegrationTest {
 //                .andExpect(status().isCreated());
 //
 //    }
+
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
     void whenGettingAllParkingLot_thenReturnedAllParkingLot() throws Exception {

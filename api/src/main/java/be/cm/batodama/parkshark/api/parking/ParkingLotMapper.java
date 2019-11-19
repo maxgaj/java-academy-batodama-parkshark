@@ -20,16 +20,16 @@ public class ParkingLotMapper {
 
 
     public ParkingLotDtoToReturn mapToParkingLotDtoToReturn(ParkingLot parkingLot) {
-        return new ParkingLotDtoToReturn(parkingLot.getId(), parkingLot.getParkingName(), parkingLot.getParkingCategory(),
+        return new ParkingLotDtoToReturn(parkingLot.getId(), parkingLot.getParkingName(), parkingLot.getParkingCategory().toString(),
                 new AddressDto(parkingLot.getAddress().getStreetName(), parkingLot.getAddress().getStreetNumber(),
                         new PostCodeDto(parkingLot.getAddress().getPostCode().getPostCode(), parkingLot.getAddress().getPostCode().getPostLabel())), parkingLot.getParkingMaxSize(),
-                            new ParkingLotContactPersonDto(parkingLot.getParkingLotContactPerson().getId(), parkingLot.getParkingLotContactPerson().getName(), parkingLot.getParkingLotContactPerson().geteMail(),
+                            new ParkingLotContactPersonDto(parkingLot.getParkingLotContactPerson().getId(), parkingLot.getParkingLotContactPerson().getName(), parkingLot.getParkingLotContactPerson().getEmail(),
                                 parkingLot.getParkingLotContactPerson().getPhoneNumber(), parkingLot.getParkingLotContactPerson().getTelephoneNumber(),
                                     new AddressDto(parkingLot.getParkingLotContactPerson().getAddress().getStreetName(), parkingLot.getParkingLotContactPerson().getAddress().getStreetNumber(),
                                         new PostCodeDto(parkingLot.getParkingLotContactPerson().getAddress().getPostCode().getPostCode(), parkingLot.getParkingLotContactPerson().getAddress().getPostCode().getPostLabel()))), parkingLot.getAllocationPricePerHour());
     }
 
-    private ParkingLotContactPerson getParkingLotContactPerson(Long id) {
+    public ParkingLotContactPerson getParkingLotContactPerson(Long id) {
         return entityManager
                 .createQuery("SELECT p FROM ParkingLotContactPerson p where p.id = :id", ParkingLotContactPerson.class)
                 .setParameter("id", id)
