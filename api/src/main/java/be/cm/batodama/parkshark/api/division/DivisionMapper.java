@@ -5,11 +5,13 @@ import be.cm.batodama.parkshark.domain.division.Division;
 
 public class DivisionMapper {
 
-    public static Division mapToDivision(DivisionDto divisionDto){
-        return new Division(divisionDto.name, divisionDto.originalName, new Director(divisionDto.firstName,divisionDto.lastName));
+    public static Division mapToDivision(DivisionDto divisionDto) {
+            return new Division(divisionDto.name, divisionDto.originalName, new Director(divisionDto.firstName, divisionDto.lastName),divisionDto.parent);
+
     }
 
-    public static DivisionDto mapToDivisionDto(Division division){
+    public static DivisionDto mapToDivisionDto(Division division) {
         return new DivisionDto(division);
     }
+
 }

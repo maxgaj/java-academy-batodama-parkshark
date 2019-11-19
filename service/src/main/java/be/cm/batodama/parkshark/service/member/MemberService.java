@@ -25,7 +25,14 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+
+
+
     public void addMember(Member member) {
         memberRepository.save(member);
+    }
+
+    public Member getMember(long ID) {
+        return memberRepository.getOne(ID);
     }
 }

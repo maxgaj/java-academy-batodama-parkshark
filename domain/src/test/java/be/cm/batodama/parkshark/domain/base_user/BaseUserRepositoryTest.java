@@ -20,4 +20,10 @@ class BaseUserRepositoryTest {
         List<BaseUser> baseUsers = baseUserRepository.findByUsernameAndPassword("User", "1234");
         Assertions.assertThat(baseUsers).isEmpty();
     }
+
+    @Test
+    void findByUsernameAndPassword_givenValidData_returnValidBaseUser() {
+        List<BaseUser> baseUsers = baseUserRepository.findByUsernameAndPassword("member", "1234");
+        Assertions.assertThat(baseUsers).isNotEmpty();
+    }
 }

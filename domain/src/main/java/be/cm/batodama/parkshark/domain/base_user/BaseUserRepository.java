@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface BaseUserRepository extends JpaRepository<BaseUser, Long> {
 
-    @Query("SELECT u.id, u.username, u.password, u.role FROM BaseUser u WHERE u.username=:uUsername AND u.password=:uPassword")
+    @Query("SELECT u FROM BaseUser u WHERE u.username=:uUsername AND u.password=:uPassword")
     List<BaseUser> findByUsernameAndPassword(@Param("uUsername") String username, @Param("uPassword") String Password);
 }
