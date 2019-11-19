@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -91,6 +92,17 @@ class ParkingControllerIntegrationTest {
 //                .andExpect(status().isCreated());
 //
 //    }
+
+    @Test
+    @WithMockUser(authorities = "ROLE_MANAGER")
+    void whenGettingAllParkingLot_thenReturnedAllParkingLot() throws Exception {
+        mockMvc.perform(get("/parkingLots")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
 
     public static String asJsonString(final Object obj) {
         try {
