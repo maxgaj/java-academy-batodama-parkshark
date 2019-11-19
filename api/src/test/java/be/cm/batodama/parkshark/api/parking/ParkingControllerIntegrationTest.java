@@ -37,11 +37,9 @@ class ParkingControllerIntegrationTest {
     @WithMockUser(authorities = "ROLE_MANAGER")
     void givenParkingLotDto_whenCreatingParkingLot_thenReturnedParkingLotDtoEqualsOriginal() throws Exception {
         entityManager.persist(new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
-                new Address("Street Test", "1",
-                        new PostCode("Post Test", "Leuven"))));
+                new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))));
 
-        ParkingLotDto originalParkingLotDto = new ParkingLotDto("Test",
-                "UNDERGROUND",
+        ParkingLotDto originalParkingLotDto = new ParkingLotDto("Test", "UNDERGROUND",
                 new AddressDto("Street Test", "1", new PostCodeDto("Post Test", "Leuven")),
                 50,
                 1,
@@ -92,11 +90,26 @@ class ParkingControllerIntegrationTest {
 //                .andExpect(status().isCreated());
 //
 //    }
-
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
     void whenGettingAllParkingLot_thenReturnedAllParkingLot() throws Exception {
         mockMvc.perform(get("/parkingLots")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    @WithMockUser(authorities = "ROLE_MANAGER")
+    void whenGettingParkingLotByID_thenReturnedParkingLot() throws Exception {
+        entityManager.persist(new ParkingLot("Test", ParkingLotCategory.UNDERGROUND,
+                new Address("test", "test", new PostCode("test", "test")), 10,
+                new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
+                new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))), 10));
+
+        mockMvc.perform(get("/parkingLots/3")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))

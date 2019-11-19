@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -23,6 +24,11 @@ public class ParkingLotService {
 
     public List<ParkingLot> findAll(){
         return parkingLotRepository.findAll();
+    }
+
+    public ParkingLot findById(long id) throws Exception {
+        Optional<ParkingLot> parkingLot = parkingLotRepository.findById(id);
+        return parkingLot.orElseThrow(Exception::new);
     }
 
 }
