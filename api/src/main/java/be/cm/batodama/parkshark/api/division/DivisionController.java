@@ -9,6 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/divisions")
 public class DivisionController {
@@ -29,5 +32,16 @@ public class DivisionController {
         Division division = divisionService.save(DivisionMapper.mapToDivision(divisionDto));
         logger.info("Division with name: " + division.getName() + ", for director with first name: " + division.getDirector().getFirstName() + " successfully created");
         return DivisionMapper.mapToDivisionDto(division);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<DivisionDto> getOverviewOfAllDivisions() {
+        return divisionService
+                .getDivisionRepository()
+                .findAll()
+                .stream()
+                .map(DivisionMapper::mapToDivisionDto)
+                .collect(Collectors.toList());
     }
 }

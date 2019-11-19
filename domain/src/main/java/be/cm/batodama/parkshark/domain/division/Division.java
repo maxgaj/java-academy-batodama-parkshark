@@ -43,6 +43,10 @@ public class Division {
         return director;
     }
 
+    public long getId() {
+        return id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
