@@ -2,6 +2,7 @@ package be.cm.batodama.parkshark.domain.member;
 
 import be.cm.batodama.parkshark.domain.base_user.BaseUser;
 import be.cm.batodama.parkshark.domain.base_user.Role;
+import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -38,9 +39,9 @@ public class Member extends BaseUser {
     private String licencePlateCountry;
     @Column(name = "REGISTRATION_DATE",columnDefinition = "DATE")
     private LocalDateTime registrationDate;
-
-
-
+    @Column(name = "MEMBERSHIP_LEVEL")
+    @Enumerated(EnumType.STRING)
+    private MembershipLevel membershipLevel;
 
     public Member() {
     }
@@ -58,7 +59,25 @@ public class Member extends BaseUser {
         this.licencePlateNumber = licencePlateNumber;
         this.licencePlateCountry = licencePlateCountry;
         this.registrationDate = registrationDate;
+        this.membershipLevel = MembershipLevel.BRONZE;
     }
+    public Member(String username, String password, String firstName, String lastName, String streetAndNumber, String zipCode, String city, String country, String email,String phone, String licencePlateNumber, String licencePlateCountry, LocalDateTime registrationDate, MembershipLevel membershipLevel) {
+        super(username, password, Role.ROLE_MEMBER);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.streetAndNumber = streetAndNumber;
+        this.zipCode = zipCode;
+        this.city = city;
+        this.country = country;
+        this.email = email;
+        this.phone = phone;
+        this.licencePlateNumber = licencePlateNumber;
+        this.licencePlateCountry = licencePlateCountry;
+        this.registrationDate = registrationDate;
+        this.membershipLevel = membershipLevel;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -116,6 +135,10 @@ public class Member extends BaseUser {
 
     public LocalDateTime getRegistrationDate() {
         return registrationDate;
+    }
+
+    public MembershipLevel getMembershipLevel() {
+        return membershipLevel;
     }
 
     public String getLastName() {
