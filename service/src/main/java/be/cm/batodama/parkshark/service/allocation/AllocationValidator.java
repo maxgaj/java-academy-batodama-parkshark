@@ -1,6 +1,8 @@
 package be.cm.batodama.parkshark.service.allocation;
 
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
+import be.cm.batodama.parkshark.domain.allocation.AllocationStatus;
+import be.cm.batodama.parkshark.domain.member.Member;
 import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
 import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
 import org.springframework.stereotype.Service;
@@ -9,7 +11,8 @@ import org.springframework.stereotype.Service;
 public class AllocationValidator {
 
     public void validate(Allocation allocation){
-        memberIsNotNull(allocation);
+        allocationIsNotNull(allocation);
+        memberIsNotNull(allocation.getMember());
         parkingLotIsNotNull(allocation);
         licensePlateIsNotNull(allocation);
         licensePlateIsAccepted(allocation);
@@ -17,8 +20,21 @@ public class AllocationValidator {
         startingTimeIsNotNull(allocation);
     }
 
-    private void memberIsNotNull(Allocation allocation) {
-        if (allocation.getMember() == null){
+    public void validateToStop(Allocation allocation, Member member){
+        allocationIsNotNull(allocation);
+        memberIsNotNull(member);
+        allocationIsActive(allocation);
+        memberIsOwner(allocation, member);
+    }
+
+    private void allocationIsNotNull(Allocation allocation) {
+        if (allocation == null){
+            throw new InvalidAllocationException("Allocation cannot be null");
+        }
+    }
+
+    private void memberIsNotNull(Member member) {
+        if (member == null){
             throw new InvalidAllocationException("Member cannot be null");
         }
     }
@@ -53,6 +69,18 @@ public class AllocationValidator {
     private void startingTimeIsNotNull(Allocation allocation) {
         if (allocation.getStartTime() == null){
             throw new InvalidAllocationException("Starting time cannot be null");
+        }
+    }
+
+    private void allocationIsActive(Allocation allocation) {
+        if (allocation.getStatus() != AllocationStatus.ACTIVE){
+            throw new InvalidAllocationException("Allocation is not active");
+        }
+    }
+
+    private void memberIsOwner(Allocation allocation, Member member) {
+        if (allocation.getMember().getId() != member.getId()){
+            throw new InvalidAllocationException("Allocation is stopped");
         }
     }
 
