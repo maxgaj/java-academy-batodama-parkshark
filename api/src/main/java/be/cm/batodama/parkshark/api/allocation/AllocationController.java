@@ -6,6 +6,7 @@ import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.allocation.AllocationRepository;
 import be.cm.batodama.parkshark.service.allocation.AllocationCreator;
 import be.cm.batodama.parkshark.service.allocation.AllocationValidator;
+import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -16,6 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Api(tags = "Parking spots allocations")
 @RestController
@@ -51,6 +58,12 @@ public class AllocationController {
         allocationValidator.validate(allocation);
         Allocation savedAllocation = allocationRepository.saveAndFlush(allocation);
         return allocationMapper.mapToStartedAllocationDto(savedAllocation);
+    }
 
+    @ExceptionHandler({IllegalArgumentException.class, InvalidAllocationException.class})
+    private void illegalArgumentExceptionHandler(Exception ex, HttpServletResponse response) throws IOException {
+        response.sendError(BAD_REQUEST.value(), ex.getMessage());
+        logger.error("AllocationController: " + ex.getMessage());
     }
 }
+
