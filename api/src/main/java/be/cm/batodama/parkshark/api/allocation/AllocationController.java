@@ -106,7 +106,7 @@ public class AllocationController {
                 .collect(Collectors.toList());
     }
 
-    @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
+    @ApiOperation(value="Get all parking spot allocation filtered on status")
     @GetMapping(params = {"status", "ordering"},produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
