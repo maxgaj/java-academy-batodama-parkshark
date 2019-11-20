@@ -25,7 +25,7 @@ public class AllocationService {
     }
 
     @Transactional
-    public Allocation stopParkingAllocation(String allocationId, String username) {
+    public Allocation stopParkingAllocation(long allocationId, String username) {
         Member member = getMemberByUsername(username);
         Allocation allocationToStop = getAllocationFromId(allocationId);
         allocationValidator.validateToStop(allocationToStop, member);
@@ -33,15 +33,9 @@ public class AllocationService {
         return allocationToStop;
     }
 
-    private Allocation getAllocationFromId(String allocationId) {
-        Allocation allocation = null;
-        try {
-            allocation = allocationRepository.findById(Long.parseLong(allocationId))
+    private Allocation getAllocationFromId(long allocationId) {
+        return allocationRepository.findById(allocationId)
                     .orElseThrow(() -> new IllegalArgumentException(format("Invalid Allocation Id: no allocation for Id \"%s\"", allocationId)));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(format("Invalid Allocation Id: %s is not a valid number", allocationId));
-        }
-        return allocation;
     }
 
     private Member getMemberByUsername(String username) {

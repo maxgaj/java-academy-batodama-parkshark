@@ -22,19 +22,13 @@ public class AllocationCreator {
         this.parkingLotRepository = parkingLotRepository;
     }
 
-    public Allocation create(String username, String parkingId, String licensePlate){
+    public Allocation create(String username, long parkingId, String licensePlate){
         Member member = memberRepository.findOneByUsername(username);
         if (member == null){
             throw new IllegalArgumentException(format("Invalid username: username %s not found", username));
         }
-        ParkingLot parkingLot = null;
-        try {
-            parkingLot = parkingLotRepository.findById(Long.parseLong(parkingId))
+        ParkingLot parkingLot = parkingLotRepository.findById(parkingId)
                     .orElseThrow(() -> new IllegalArgumentException(format("Invalid Parking lot Id: no parking lot for Id \"%s\"", parkingId)));
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(format("Invalid Parking lot Id: %s is not a valid number", parkingId));
-        }
-
         return new Allocation(member, parkingLot, licensePlate);
     }
 }

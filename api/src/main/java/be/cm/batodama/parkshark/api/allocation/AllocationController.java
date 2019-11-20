@@ -56,7 +56,7 @@ public class AllocationController {
     @PostMapping(params = {"parkingId", "licensePlate"}, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ROLE_MEMBER')")
-    public StartedAllocationsDto startAllocation(@RequestParam String parkingId, @RequestParam String licensePlate){
+    public StartedAllocationsDto startAllocation(@RequestParam long parkingId, @RequestParam String licensePlate){
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Allocation allocation = allocationCreator.create(username, parkingId, licensePlate);
         allocationValidator.validate(allocation);
@@ -68,7 +68,7 @@ public class AllocationController {
     @PutMapping(params = {"allocationId"}, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MEMBER')")
-    public StoppedAllocationDto stopAllocation(@RequestParam String allocationId){
+    public StoppedAllocationDto stopAllocation(@RequestParam long allocationId){
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Allocation stoppedAllocation = allocationService.stopParkingAllocation(allocationId, username);
         return allocationMapper.mapToStoppedAllocationDto(stoppedAllocation);
