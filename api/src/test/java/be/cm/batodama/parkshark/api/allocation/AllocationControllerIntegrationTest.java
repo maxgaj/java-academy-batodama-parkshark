@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -93,5 +94,32 @@ class AllocationControllerIntegrationTest {
                         .with(httpBasic("manager", "1234"))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void getAllAllocationsWithoutFilter_thenReturnAllocations() throws Exception {
+        mockMvc.perform(
+                get("/allocations")
+                        .with(httpBasic("manager", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllAllocationsWithAmountFilter_thenReturnAllocations() throws Exception {
+        mockMvc.perform(
+                get("/allocations?amountToShow=1")
+                        .with(httpBasic("manager", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllAllocationsWithStatusAndOrderingFilter_thenReturnAllocations() throws Exception {
+        mockMvc.perform(
+                get("/allocations?status=ACTIVE&ordering=ASCENDING")
+                        .with(httpBasic("manager", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

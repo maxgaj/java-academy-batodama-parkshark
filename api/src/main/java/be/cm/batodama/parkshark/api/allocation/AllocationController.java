@@ -3,7 +3,6 @@ package be.cm.batodama.parkshark.api.allocation;
 import be.cm.batodama.parkshark.api.allocation.dtos.AllocationDto;
 import be.cm.batodama.parkshark.api.allocation.dtos.StartedAllocationsDto;
 import be.cm.batodama.parkshark.api.allocation.dtos.StoppedAllocationDto;
-import be.cm.batodama.parkshark.api.division.DivisionController;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.allocation.AllocationRepository;
 import be.cm.batodama.parkshark.domain.allocation.AllocationStatus;
@@ -23,12 +22,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -99,7 +96,7 @@ public class AllocationController {
     @GetMapping(params = {"amountToShow"},produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
-    public List<AllocationDto> getAllAllocationsFilteredOnAmountToShow(@RequestParam int amountToShow){
+    public List<AllocationDto> getAllAllocationsFilteredOnAmountToShow(@RequestParam long amountToShow){
         return allocationRepository.findAll()
                 .stream()
                 .filter(allocation -> allocation.getStartTime() != null)
@@ -110,7 +107,7 @@ public class AllocationController {
     }
 
     @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
-    @GetMapping(params = {"Status", "ordering"},produces = APPLICATION_JSON_VALUE)
+    @GetMapping(params = {"status", "ordering"},produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     public List<AllocationDto> getAllAllocationsFilteredOnStatusAscOrDesc(@RequestParam String status, @RequestParam String ordering){
@@ -120,7 +117,7 @@ public class AllocationController {
                 .sorted(Comparator.comparing(Allocation::getStartTime))
                 .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
                 .collect(Collectors.toList());
-        if (ordering.equals("descending")) Collections.reverse(allocationDtos);
+        if (ordering.toUpperCase().equals("DESCENDING")) Collections.reverse(allocationDtos);
         return  allocationDtos;
     }
 
