@@ -30,7 +30,6 @@ class AllocationValidatorTest {
         division = new Division("Main division","Red",new Director("John","Jenkins"),null);
         validParkingLot = new ParkingLot("parkingName", ParkingLotCategory.ABOVE_GROUND, new Address("", "", new PostCode("", "")), 0, new ParkingLotContactPerson("", "coucou@hello.be", "", "", new Address("", "", new PostCode("", ""))), 0,division);
         validAllocation = new Allocation(validBronzeMember, validParkingLot, "1ABC123");
-
     }
 
     @Test
