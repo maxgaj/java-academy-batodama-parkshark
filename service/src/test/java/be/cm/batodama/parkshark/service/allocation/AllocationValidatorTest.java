@@ -58,4 +58,21 @@ class AllocationValidatorTest {
         Allocation allocation = new Allocation(validGoldMember, validParkingLot, "9XYZ789");
         org.junit.jupiter.api.Assertions.assertAll(()->allocationValidator.validate(allocation));
     }
+
+    @Test
+    void validateToStop_givenNull_thenThrowsException() {
+        Allocation allocation = null;
+        Assertions.assertThatThrownBy(() ->allocationValidator.validateToStop(allocation, validBronzeMember)).isInstanceOf(InvalidAllocationException.class);
+    }
+
+    @Test
+    void validateToStop_givenNullMember_thenThrowsException() {
+        Assertions.assertThatThrownBy(() ->allocationValidator.validateToStop(validAllocation, null)).isInstanceOf(InvalidAllocationException.class);
+    }
+
+    @Test
+    void validateToStop_givenStoppedException_thenThrowsException() {
+        validAllocation.setStopTime(LocalDateTime.now());
+        Assertions.assertThatThrownBy(() ->allocationValidator.validateToStop(validAllocation, validBronzeMember)).isInstanceOf(InvalidAllocationException.class);
+    }
 }

@@ -1,10 +1,12 @@
 package be.cm.batodama.parkshark.api.allocation;
 
 import be.cm.batodama.parkshark.api.allocation.dtos.StartedAllocationsDto;
+import be.cm.batodama.parkshark.api.allocation.dtos.StoppedAllocationDto;
 import be.cm.batodama.parkshark.api.division.DivisionController;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.allocation.AllocationRepository;
 import be.cm.batodama.parkshark.service.allocation.AllocationCreator;
+import be.cm.batodama.parkshark.service.allocation.AllocationService;
 import be.cm.batodama.parkshark.service.allocation.AllocationValidator;
 import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
 import io.swagger.annotations.Api;
@@ -35,17 +37,19 @@ public class AllocationController {
     private AllocationCreator allocationCreator;
     private AllocationValidator allocationValidator;
     private AllocationMapper allocationMapper;
+    private AllocationService allocationService;
 
     @Autowired
     public AllocationController(AllocationRepository allocationRepository,
                                 AllocationCreator allocationCreator,
                                 AllocationValidator allocationValidator,
-                                AllocationMapper allocationMapper) {
+                                AllocationMapper allocationMapper,
+                                AllocationService allocationService) {
         this.allocationRepository = allocationRepository;
         this.allocationCreator = allocationCreator;
         this.allocationValidator = allocationValidator;
         this.allocationMapper = allocationMapper;
-
+        this.allocationService = allocationService;
     }
 
     @ApiOperation(value="Starts Parking spot allocation")
@@ -58,6 +62,16 @@ public class AllocationController {
         allocationValidator.validate(allocation);
         Allocation savedAllocation = allocationRepository.saveAndFlush(allocation);
         return allocationMapper.mapToStartedAllocationDto(savedAllocation);
+    }
+
+    @ApiOperation(value="Stops Parking Lot Allocation")
+    @PutMapping(params = {"allocationId"}, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_MEMBER')")
+    public StoppedAllocationDto stopAllocation(@RequestParam String allocationId){
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Allocation stoppedAllocation = allocationService.stopParkingAllocation(allocationId, username);
+        return allocationMapper.mapToStoppedAllocationDto(stoppedAllocation);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, InvalidAllocationException.class})

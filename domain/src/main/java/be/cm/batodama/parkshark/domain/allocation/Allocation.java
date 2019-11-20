@@ -31,19 +31,27 @@ public class Allocation {
     @NotNull
     private String licencePlateNumber;
 
+    @Column(name = "STATUS")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AllocationStatus status;
+
     @Column(name = "START_TIME")
     @NotNull
     private LocalDateTime startTime;
 
+    @Column(name = "STOP_TIME")
+    private LocalDateTime stopTime;
+
     public Allocation() {
     }
-
 
     public Allocation(Member member, ParkingLot parkingLot, String licencePlateNumber) {
         this.member = member;
         this.parkingLot = parkingLot;
         this.licencePlateNumber = licencePlateNumber;
         this.startTime = LocalDateTime.now();
+        this.status = AllocationStatus.ACTIVE;
     }
 
     public long getId() {
@@ -62,7 +70,20 @@ public class Allocation {
         return licencePlateNumber;
     }
 
+    public AllocationStatus getStatus() {
+        return status;
+    }
+
     public LocalDateTime getStartTime() {
         return startTime;
+    }
+
+    public LocalDateTime getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(LocalDateTime stopTime) {
+        this.stopTime = stopTime;
+        this.status = AllocationStatus.STOPPED;
     }
 }
