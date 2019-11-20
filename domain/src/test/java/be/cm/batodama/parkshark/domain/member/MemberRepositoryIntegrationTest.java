@@ -1,4 +1,5 @@
 package be.cm.batodama.parkshark.domain.member;
+import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
-public class MemberRepositorayIntegrationTest {
+public class MemberRepositoryIntegrationTest {
     @Resource
     private MemberRepository memberRepository;
 
     @Test
     void onCreateMemberInRepositoryCheckAllFieldnamesWhenGettingTheMemberOutOfTheReposisitory() {
-        /*
-        // deleting the repository
-        long teller = 0;
-        do {
-            Member member = memberRepository.getOne(teller);
-            if (member != null) {
-                System.out.println("DELETE *****************************");
-                memberRepository.delete(member);
-            }
-            teller++;
-        } while (teller < 100);
-        */
-
         // first part of the test
         // saving to the repository
         Member member1 =
@@ -71,6 +59,7 @@ public class MemberRepositorayIntegrationTest {
         Assertions.assertEquals("belgium",member2.getLicencePlateCountry());
         assertEquals(11L, member2.getRegistrationDate().getMonthValue());
         assertEquals(2019L, member2.getRegistrationDate().getYear());
+        assertEquals(MembershipLevel.BRONZE,member2.getMembershipLevel());
 
         // third part of the test
         // get one member by ID from the repository

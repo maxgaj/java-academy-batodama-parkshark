@@ -2,11 +2,15 @@ package be.cm.batodama.parkshark.api.allocation;
 
 import be.cm.batodama.parkshark.api.allocation.dtos.AllocationDto;
 import be.cm.batodama.parkshark.api.allocation.dtos.StartedAllocationsDto;
+import be.cm.batodama.parkshark.api.allocation.dtos.StoppedAllocationDto;
 import be.cm.batodama.parkshark.api.division.DivisionController;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.allocation.AllocationRepository;
+import be.cm.batodama.parkshark.domain.allocation.AllocationStatus;
 import be.cm.batodama.parkshark.service.allocation.AllocationCreator;
+import be.cm.batodama.parkshark.service.allocation.AllocationService;
 import be.cm.batodama.parkshark.service.allocation.AllocationValidator;
+import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -18,6 +22,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,17 +45,19 @@ public class AllocationController {
     private AllocationCreator allocationCreator;
     private AllocationValidator allocationValidator;
     private AllocationMapper allocationMapper;
+    private AllocationService allocationService;
 
     @Autowired
     public AllocationController(AllocationRepository allocationRepository,
                                 AllocationCreator allocationCreator,
                                 AllocationValidator allocationValidator,
-                                AllocationMapper allocationMapper) {
+                                AllocationMapper allocationMapper,
+                                AllocationService allocationService) {
         this.allocationRepository = allocationRepository;
         this.allocationCreator = allocationCreator;
         this.allocationValidator = allocationValidator;
         this.allocationMapper = allocationMapper;
-
+        this.allocationService = allocationService;
     }
 
     @ApiOperation(value="Starts Parking spot allocation")
@@ -56,7 +70,16 @@ public class AllocationController {
         allocationValidator.validate(allocation);
         Allocation savedAllocation = allocationRepository.saveAndFlush(allocation);
         return allocationMapper.mapToStartedAllocationDto(savedAllocation);
+    }
 
+    @ApiOperation(value="Stops Parking Lot Allocation")
+    @PutMapping(params = {"allocationId"}, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_MEMBER')")
+    public StoppedAllocationDto stopAllocation(@RequestParam String allocationId){
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Allocation stoppedAllocation = allocationService.stopParkingAllocation(allocationId, username);
+        return allocationMapper.mapToStoppedAllocationDto(stoppedAllocation);
     }
 
     @ApiOperation(value="Get all parking spot allocation")
@@ -64,30 +87,26 @@ public class AllocationController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     public List<AllocationDto> getAllAllocations(){
-        List<AllocationDto> allocationDtos = allocationRepository
+        return allocationRepository
                 .findAll()
                 .stream()
-                .filter(allocation -> allocation.getStartTime() != null)
                 .sorted(Comparator.comparing(Allocation::getStartTime))
-                .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
+                .map(allocation -> allocationMapper.mapToDto(allocation))
                 .collect(Collectors.toList());
-       return  allocationDtos;
     }
 
     @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
     @GetMapping(params = {"amountToShow"},produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
-    public List<AllocationDto> getAllAllocationsFilteredOnAmountToShow(){
-        List<AllocationDto> allocationDtos = allocationRepository
-                .findAll()
+    public List<AllocationDto> getAllAllocationsFilteredOnAmountToShow(@RequestParam int amountToShow){
+        return allocationRepository.findAll()
                 .stream()
                 .filter(allocation -> allocation.getStartTime() != null)
                 .sorted(Comparator.comparing(Allocation::getStartTime))
-                .limit(100)
+                .limit(amountToShow)
                 .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
                 .collect(Collectors.toList());
-        return  allocationDtos;
     }
 
     @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
@@ -95,13 +114,20 @@ public class AllocationController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
     public List<AllocationDto> getAllAllocationsFilteredOnStatusAscOrDesc(@RequestParam String status, @RequestParam String ordering){
-        List<AllocationDto> allocationDtos = allocationRepository
-                .findAll()
+        List<AllocationDto> allocationDtos = allocationRepository.findAll()
                 .stream()
-                .filter(allocation -> allocation.getStartTime() != null)
+                .filter(allocation -> allocation.getStatus() == AllocationStatus.valueOf(status))
                 .sorted(Comparator.comparing(Allocation::getStartTime))
                 .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
                 .collect(Collectors.toList());
+        if (ordering.equals("descending")) Collections.reverse(allocationDtos);
         return  allocationDtos;
     }
+
+    @ExceptionHandler({IllegalArgumentException.class, InvalidAllocationException.class})
+    private void illegalArgumentExceptionHandler(Exception ex, HttpServletResponse response) throws IOException {
+        response.sendError(BAD_REQUEST.value(), ex.getMessage());
+        logger.error("AllocationController: " + ex.getMessage());
+    }
 }
+
