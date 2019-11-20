@@ -2,7 +2,6 @@ package be.cm.batodama.parkshark.api.allocation;
 
 import be.cm.batodama.parkshark.api.allocation.dtos.StartedAllocationsDto;
 import be.cm.batodama.parkshark.api.allocation.dtos.StoppedAllocationDto;
-import be.cm.batodama.parkshark.api.division.DivisionController;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.allocation.AllocationRepository;
 import be.cm.batodama.parkshark.service.allocation.AllocationCreator;
@@ -21,7 +20,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -52,11 +50,11 @@ public class AllocationController {
         this.allocationService = allocationService;
     }
 
-    @ApiOperation(value="Starts Parking spot allocation")
+    @ApiOperation(value = "Starts Parking spot allocation")
     @PostMapping(params = {"parkingId", "licensePlate"}, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ROLE_MEMBER')")
-    public StartedAllocationsDto startAllocation(@RequestParam String parkingId, @RequestParam String licensePlate){
+    public StartedAllocationsDto startAllocation(@RequestParam String parkingId, @RequestParam String licensePlate) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Allocation allocation = allocationCreator.create(username, parkingId, licensePlate);
         allocationValidator.validate(allocation);
@@ -64,11 +62,11 @@ public class AllocationController {
         return allocationMapper.mapToStartedAllocationDto(savedAllocation);
     }
 
-    @ApiOperation(value="Stops Parking Lot Allocation")
+    @ApiOperation(value = "Stops Parking Lot Allocation")
     @PutMapping(params = {"allocationId"}, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MEMBER')")
-    public StoppedAllocationDto stopAllocation(@RequestParam String allocationId){
+    public StoppedAllocationDto stopAllocation(@RequestParam String allocationId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         Allocation stoppedAllocation = allocationService.stopParkingAllocation(allocationId, username);
         return allocationMapper.mapToStoppedAllocationDto(stoppedAllocation);

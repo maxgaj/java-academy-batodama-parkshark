@@ -15,7 +15,7 @@ public class ParkingLotMapper {
 
     public ParkingLot mapToParkingLot(ParkingLotDto parkingLotDto) {
         return new ParkingLot(parkingLotDto.parkingName, ParkingLotCategory.valueOf(parkingLotDto.parkingCategory), new Address(parkingLotDto.address.streetName, parkingLotDto.address.streetNumber, new PostCode(parkingLotDto.address.postCode.postCode, parkingLotDto.address.postCode.postLabel)),
-                parkingLotDto.parkingMaxSize, getParkingLotContactPerson(parkingLotDto.parkingLotContactPersonId), parkingLotDto.allocationPricePerHour);
+                parkingLotDto.parkingMaxSize, getParkingLotContactPerson(parkingLotDto.parkingLotContactPersonId), parkingLotDto.allocationPricePerHour, parkingLotDto.division);
     }
 
 
@@ -23,10 +23,11 @@ public class ParkingLotMapper {
         return new ParkingLotDtoToReturn(parkingLot.getId(), parkingLot.getParkingName(), parkingLot.getParkingCategory().toString(),
                 new AddressDto(parkingLot.getAddress().getStreetName(), parkingLot.getAddress().getStreetNumber(),
                         new PostCodeDto(parkingLot.getAddress().getPostCode().getPostCode(), parkingLot.getAddress().getPostCode().getPostLabel())), parkingLot.getParkingMaxSize(),
-                            new ParkingLotContactPersonDto(parkingLot.getParkingLotContactPerson().getId(), parkingLot.getParkingLotContactPerson().getName(), parkingLot.getParkingLotContactPerson().getEmail(),
-                                parkingLot.getParkingLotContactPerson().getPhoneNumber(), parkingLot.getParkingLotContactPerson().getTelephoneNumber(),
-                                    new AddressDto(parkingLot.getParkingLotContactPerson().getAddress().getStreetName(), parkingLot.getParkingLotContactPerson().getAddress().getStreetNumber(),
-                                        new PostCodeDto(parkingLot.getParkingLotContactPerson().getAddress().getPostCode().getPostCode(), parkingLot.getParkingLotContactPerson().getAddress().getPostCode().getPostLabel()))), parkingLot.getAllocationPricePerHour());
+                new ParkingLotContactPersonDto(parkingLot.getParkingLotContactPerson().getId(), parkingLot.getParkingLotContactPerson().getName(), parkingLot.getParkingLotContactPerson().getEmail(),
+                        parkingLot.getParkingLotContactPerson().getPhoneNumber(), parkingLot.getParkingLotContactPerson().getTelephoneNumber(),
+                        new AddressDto(parkingLot.getParkingLotContactPerson().getAddress().getStreetName(), parkingLot.getParkingLotContactPerson().getAddress().getStreetNumber(),
+                                new PostCodeDto(parkingLot.getParkingLotContactPerson().getAddress().getPostCode().getPostCode(), parkingLot.getParkingLotContactPerson().getAddress().getPostCode().getPostLabel()))), parkingLot.getAllocationPricePerHour(),
+                parkingLot.getDivision());
     }
 
     public ParkingLotContactPerson getParkingLotContactPerson(Long id) {

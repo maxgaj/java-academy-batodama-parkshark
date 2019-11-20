@@ -1,14 +1,14 @@
 package be.cm.batodama.parkshark.api.parking;
 
 import be.cm.batodama.parkshark.ApiTestApplication;
+import be.cm.batodama.parkshark.domain.division.Director;
+import be.cm.batodama.parkshark.domain.division.Division;
 import be.cm.batodama.parkshark.domain.parking.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -45,7 +45,8 @@ class ParkingControllerIntegrationTest {
                 new AddressDto("Street Test", "1", new PostCodeDto("Post Test", "Leuven")),
                 50,
                 3,
-                100);
+                100,
+                new Division("Name", "Original Name", new Director("Seymour", "Skinner"), null));
 
         mockMvc.perform(post("/parkingLots")
                 .content(asJsonString(originalParkingLotDto))
@@ -92,7 +93,6 @@ class ParkingControllerIntegrationTest {
 //                .andExpect(status().isCreated());
 //
 //    }
-
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
     void whenGettingAllParkingLot_thenReturnedAllParkingLot() throws Exception {
@@ -110,7 +110,9 @@ class ParkingControllerIntegrationTest {
         entityManager.persist(new ParkingLot("Test", ParkingLotCategory.UNDERGROUND,
                 new Address("test", "test", new PostCode("test", "test")), 10,
                 new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
-                new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))), 10));
+                        new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))),
+                10,
+                new Division("Name", "Original Name", new Director("Seymour", "Skinner"), null)));
 
         mockMvc.perform(get("/parkingLots/1")
                 .contentType(MediaType.APPLICATION_JSON)

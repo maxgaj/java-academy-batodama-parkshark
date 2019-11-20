@@ -39,6 +39,7 @@ public class Member extends BaseUser {
     private String licencePlateCountry;
     @Column(name = "REGISTRATION_DATE",columnDefinition = "DATE")
     private LocalDateTime registrationDate;
+
     @Column(name = "MEMBERSHIP_LEVEL")
     @Enumerated(EnumType.STRING)
     private MembershipLevel membershipLevel;

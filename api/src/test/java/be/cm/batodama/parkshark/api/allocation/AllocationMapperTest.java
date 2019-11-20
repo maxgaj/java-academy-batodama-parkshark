@@ -2,6 +2,8 @@ package be.cm.batodama.parkshark.api.allocation;
 
 import be.cm.batodama.parkshark.api.allocation.dtos.StartedAllocationsDto;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
+import be.cm.batodama.parkshark.domain.division.Director;
+import be.cm.batodama.parkshark.domain.division.Division;
 import be.cm.batodama.parkshark.domain.member.Member;
 import be.cm.batodama.parkshark.domain.parking.*;
 import org.assertj.core.api.Assertions;
@@ -19,8 +21,14 @@ class AllocationMapperTest {
 
     @BeforeEach
     void setUp() {
-        validMember = new Member("username", "", "", "", "","","","","coucou@hello.be", "", "", "", LocalDateTime.now());
-        validParkingLot = new ParkingLot("parkingName", ParkingLotCategory.ABOVE_GROUND, new Address("", "", new PostCode("", "")), 0, new ParkingLotContactPerson("", "coucou@hello.be", "", "", new Address("", "", new PostCode("", ""))), 0);
+        validMember = new Member("username", "", "", "", "", "", "", "", "coucou@hello.be", "", "", "", LocalDateTime.now());
+        validParkingLot = new ParkingLot("parkingName",
+                ParkingLotCategory.ABOVE_GROUND,
+                new Address("", "", new PostCode("", "")),
+                0,
+                new ParkingLotContactPerson("", "coucou@hello.be", "", "", new Address("", "", new PostCode("", ""))),
+                0,
+                new Division("Name", "Original Name", new Director("Seymour", "Skinner"), null));
         validAllocation = new Allocation(validMember, validParkingLot, "1ABC123");
     }
 
