@@ -27,8 +27,14 @@ public class AllocationCreator {
         if (member == null){
             throw new IllegalArgumentException(format("Invalid username: username %s not found", username));
         }
-        ParkingLot parkingLot = parkingLotRepository.findById(Long.parseLong(parkingId))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Parking lot Id"));
+        ParkingLot parkingLot = null;
+        try {
+            parkingLot = parkingLotRepository.findById(Long.parseLong(parkingId))
+                    .orElseThrow(() -> new IllegalArgumentException(format("Invalid Parking lot Id: no parking lot for Id \"%s\"", parkingId)));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(format("Invalid Parking lot Id: %s is not a valid number", parkingId));
+        }
+
         return new Allocation(member, parkingLot, licensePlate);
     }
 }

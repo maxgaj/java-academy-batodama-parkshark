@@ -57,6 +57,41 @@ class AllocationControllerIntegrationTest {
                         .with(httpBasic("member", "1234"))
                         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated());
+    }
 
+    @Test
+    void startAllocation_givenInvalidParkingLotId_thenReturnBadRequest() throws Exception {
+        mockMvc.perform(
+                post("/allocations?parkingId=abcd&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void startAllocation_givenNonExistingParkingLotId_thenReturnBadRequest() throws Exception {
+        mockMvc.perform(
+                post("/allocations?parkingId=10000&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void startAllocation_givenNonMatchingLicensePlate_thenReturnBadRequest() throws Exception {
+        mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=4fgh789")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void startAllocation_givenInvalidCredentials_thenReturnBadRequest() throws Exception {
+        mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=4fgh789")
+                        .with(httpBasic("manager", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
     }
 }

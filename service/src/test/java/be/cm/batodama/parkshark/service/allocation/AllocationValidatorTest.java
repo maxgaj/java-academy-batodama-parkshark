@@ -3,6 +3,7 @@ package be.cm.batodama.parkshark.service.allocation;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.member.Member;
 import be.cm.batodama.parkshark.domain.parking.*;
+import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,31 +29,26 @@ class AllocationValidatorTest {
     }
 
     @Test
-    void validate_givenValidAllocation_thenReturnFalse() {
-        Assertions.assertThat(allocationValidator.validate(validAllocation)).isTrue();
-    }
-
-    @Test
     void validate_givenNullMember_thenReturnFalse() {
         Allocation allocation = new Allocation(null, validParkingLot, "1ABC123");
-        Assertions.assertThat(allocationValidator.validate(allocation)).isFalse();
+        Assertions.assertThatThrownBy(() ->allocationValidator.validate(allocation)).isInstanceOf(InvalidAllocationException.class);
     }
 
     @Test
     void validate_givenNullParkingLot_thenReturnFalse() {
         Allocation allocation = new Allocation(validMember, null, "1ABC123");
-        Assertions.assertThat(allocationValidator.validate(allocation)).isFalse();
+        Assertions.assertThatThrownBy(() ->allocationValidator.validate(allocation)).isInstanceOf(InvalidAllocationException.class);
     }
 
     @Test
     void validate_givenNullLicensePlate_thenReturnFalse() {
         Allocation allocation = new Allocation(validMember, validParkingLot, null);
-        Assertions.assertThat(allocationValidator.validate(allocation)).isFalse();
+        Assertions.assertThatThrownBy(() ->allocationValidator.validate(allocation)).isInstanceOf(InvalidAllocationException.class);
     }
 
     @Test
     void validate_givenNonMatchingLicensePlate_thenReturnFalse() {
         Allocation allocation = new Allocation(validMember, validParkingLot, "9XYZ789");
-        Assertions.assertThat(allocationValidator.validate(allocation)).isFalse();
+        Assertions.assertThatThrownBy(() ->allocationValidator.validate(allocation)).isInstanceOf(InvalidAllocationException.class);
     }
 }
