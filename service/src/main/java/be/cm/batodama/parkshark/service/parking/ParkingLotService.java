@@ -2,6 +2,7 @@ package be.cm.batodama.parkshark.service.parking;
 
 import be.cm.batodama.parkshark.domain.parking.ParkingLot;
 import be.cm.batodama.parkshark.domain.parking.ParkingLotRepository;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +27,7 @@ public class ParkingLotService {
         return parkingLotRepository.findAll();
     }
 
-    public ParkingLot findById(long id) throws Exception {
-        Optional<ParkingLot> parkingLot = parkingLotRepository.findById(id);
-        return parkingLot.orElseThrow(Exception::new);
+    public ParkingLot findById(long id){
+        return parkingLotRepository.findById(id).orElseThrow( () -> new IllegalArgumentException("Parking lot with id " + id + " not found"));
     }
-
 }

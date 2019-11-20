@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ApiTestApplication.class)
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
 class ParkingControllerIntegrationTest {
 
     @Autowired
@@ -42,7 +44,7 @@ class ParkingControllerIntegrationTest {
         ParkingLotDto originalParkingLotDto = new ParkingLotDto("Test", "UNDERGROUND",
                 new AddressDto("Street Test", "1", new PostCodeDto("Post Test", "Leuven")),
                 50,
-                1,
+                3,
                 100);
 
         mockMvc.perform(post("/parkingLots")
@@ -90,6 +92,7 @@ class ParkingControllerIntegrationTest {
 //                .andExpect(status().isCreated());
 //
 //    }
+
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
     void whenGettingAllParkingLot_thenReturnedAllParkingLot() throws Exception {
@@ -109,7 +112,7 @@ class ParkingControllerIntegrationTest {
                 new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
                 new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))), 10));
 
-        mockMvc.perform(get("/parkingLots/3")
+        mockMvc.perform(get("/parkingLots/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))

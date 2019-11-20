@@ -1,5 +1,7 @@
 package be.cm.batodama.parkshark.domain.parking;
 
+import org.hibernate.exception.ConstraintViolationException;
+
 import javax.persistence.*;
 
 @Entity
@@ -32,7 +34,9 @@ public class ParkingLotContactPerson {
 
     public ParkingLotContactPerson(String name, String eMail, String phoneNumber, String telephoneNumber, Address address) {
         this.name = name;
-        this.eMail = eMail;
+        if (!isValid(eMail)) { throw new IllegalArgumentException(eMail + " is not a valid e-mail");} else {
+            this.eMail = eMail;
+        }
         this.phoneNumber = phoneNumber;
         this.telephoneNumber = telephoneNumber;
         this.address = address;
@@ -46,7 +50,7 @@ public class ParkingLotContactPerson {
         return name;
     }
 
-    public String geteMail() {
+    public String getEmail() {
         return eMail;
     }
 
@@ -60,6 +64,12 @@ public class ParkingLotContactPerson {
 
     public Address getAddress() {
         return address;
+    }
+
+
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 
     @Override

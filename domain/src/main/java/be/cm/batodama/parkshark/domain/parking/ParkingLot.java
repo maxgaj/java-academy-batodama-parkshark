@@ -16,8 +16,9 @@ public class ParkingLot {
     @Column(name = "PARKING_NAME")
     private String parkingName;
 
+    @Enumerated( EnumType.STRING)
     @Column(name = "PARKING_CATEGORY")
-    private String parkingCategory;
+    private ParkingLotCategory parkingCategory;
 
     @Embedded
     private Address address;
@@ -37,7 +38,7 @@ public class ParkingLot {
 
     public ParkingLot(String parkingName, ParkingLotCategory parkingCategory, Address address, long parkingMaxSize, ParkingLotContactPerson parkingLotContactPerson, long allocationPricePerHour) {
         this.parkingName = parkingName;
-        this.parkingCategory = parkingCategory.toString();
+        this.parkingCategory = parkingCategory;
         this.address = address;
         this.parkingMaxSize = parkingMaxSize;
         this.parkingLotContactPerson = parkingLotContactPerson;
@@ -52,7 +53,7 @@ public class ParkingLot {
         return parkingName;
     }
 
-    public String getParkingCategory() {
+    public ParkingLotCategory getParkingCategory() {
         return parkingCategory;
     }
 
