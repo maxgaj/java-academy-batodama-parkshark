@@ -1,5 +1,7 @@
 package be.cm.batodama.parkshark.domain.parking;
 
+import be.cm.batodama.parkshark.domain.division.Division;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -33,16 +35,21 @@ public class ParkingLot {
     @Column(name = "ALLOCATION_PRICE_PER_HOUR")
     private long allocationPricePerHour;
 
+    @ManyToOne
+    @JoinColumn(name = "DIVISION_ID")
+    private Division division;
+
     public ParkingLot() {
     }
 
-    public ParkingLot(String parkingName, ParkingLotCategory parkingCategory, Address address, long parkingMaxSize, ParkingLotContactPerson parkingLotContactPerson, long allocationPricePerHour) {
+    public ParkingLot(String parkingName, ParkingLotCategory parkingCategory, Address address, long parkingMaxSize, ParkingLotContactPerson parkingLotContactPerson, long allocationPricePerHour, Division division) {
         this.parkingName = parkingName;
         this.parkingCategory = parkingCategory;
         this.address = address;
         this.parkingMaxSize = parkingMaxSize;
         this.parkingLotContactPerson = parkingLotContactPerson;
         this.allocationPricePerHour = allocationPricePerHour;
+        this.division = division;
     }
 
     public long getId() {
@@ -71,6 +78,10 @@ public class ParkingLot {
 
     public long getAllocationPricePerHour() {
         return allocationPricePerHour;
+    }
+
+    public Division getDivision() {
+        return division;
     }
 
     @Override
