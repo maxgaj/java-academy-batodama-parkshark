@@ -4,6 +4,7 @@ import be.cm.batodama.parkshark.domain.member.Member;
 
 import java.time.LocalDateTime;
 
+
 public class SmallMemberDto {
 
     public final long id;
