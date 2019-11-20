@@ -1,6 +1,7 @@
 package be.cm.batodama.parkshark.api.member;
 
 import be.cm.batodama.parkshark.domain.member.Member;
+import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,8 @@ public class MemberMapperTest {
                 "0123456789",
                 "987654321",
                 "JZE",
-                LocalDateTime.now());
+                LocalDateTime.now(),
+                MembershipLevel.GOLD);
 
         Member member = MemberMapper.mapToMember(memberDto);
         Assertions.assertEquals(member.getFistName(), memberDto.firstName);
@@ -37,6 +39,7 @@ public class MemberMapperTest {
         Assertions.assertEquals(member.getPhone(), memberDto.phone);
         Assertions.assertEquals(member.getLicencePlateNumber(), memberDto.licencePlateNumber);
         Assertions.assertEquals(member.getLicencePlateCountry(), memberDto.licencePlateCountry);
+        Assertions.assertEquals(member.getMembershipLevel(),memberDto.membershipLevel);
     }
     @Test
     void givenMember_whenMappingToMemberDto_thenAllFieldsAreEqual() {
@@ -67,6 +70,7 @@ public class MemberMapperTest {
         Assertions.assertEquals(member.getPhone(), memberDto.phone);
         Assertions.assertEquals(member.getLicencePlateNumber(), memberDto.licencePlateNumber);
         Assertions.assertEquals(member.getLicencePlateCountry(), memberDto.licencePlateCountry);
+        Assertions.assertEquals(member.getMembershipLevel(),memberDto.membershipLevel);
     }
 
 

@@ -17,7 +17,8 @@ public class MemberMapper {
                 memberDto.phone,
                 memberDto.licencePlateNumber,
                 memberDto.licencePlateCountry,
-                memberDto.registrationDate);
+                memberDto.registrationDate,
+                memberDto.membershipLevel);
     }
 
     public static MemberDto mapToMemberDto(Member member) {
@@ -34,10 +35,11 @@ public class MemberMapper {
                 member.getPhone(),
                 member.getLicencePlateNumber(),
                 member.getLicencePlateCountry(),
-                member.getRegistrationDate());
+                member.getRegistrationDate(),
+                member.getMembershipLevel());
     }
 
-    public static SmallMemberDto mapToSmallMemberDto(Member member){
+    public static SmallMemberDto mapToSmallMemberDto(Member member) {
         return new SmallMemberDto(
                 member.getId(),
                 member.getFistName(),
