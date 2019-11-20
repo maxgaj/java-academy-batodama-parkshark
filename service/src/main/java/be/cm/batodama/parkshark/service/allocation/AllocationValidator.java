@@ -1,10 +1,14 @@
 package be.cm.batodama.parkshark.service.allocation;
 
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
+import be.cm.batodama.parkshark.domain.allocation.AllocationRepository;
 import be.cm.batodama.parkshark.domain.allocation.AllocationStatus;
 import be.cm.batodama.parkshark.domain.member.Member;
 import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
+import be.cm.batodama.parkshark.domain.parking.ParkingLot;
+import be.cm.batodama.parkshark.domain.parking.ParkingLotRepository;
 import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -59,11 +63,10 @@ public class AllocationValidator {
         }
     }
 
-    private void parkingLotIsNotFull(Allocation allocation) {
-//        if (allocation.getParkingLot().isFull()){
-//            throw new InvalidAllocationException("This parking lot is full");
-//        }
-        //TODO
+    public void parkingLotIsNotFull(Allocation allocation) {
+        if (allocation.getParkingLot().isFull()){
+            throw new InvalidAllocationException("Parking lot is full.");
+        }
     }
 
     private void startingTimeIsNotNull(Allocation allocation) {
