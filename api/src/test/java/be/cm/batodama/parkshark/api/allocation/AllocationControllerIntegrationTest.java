@@ -192,31 +192,4 @@ class AllocationControllerIntegrationTest {
         matcher.find();
         return Long.parseLong(matcher.group());
     }
-
-    @Test
-    void getAllAllocationsWithoutFilter_thenReturnAllocations() throws Exception {
-        mockMvc.perform(
-                get("/allocations")
-                        .with(httpBasic("manager", "1234"))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void getAllAllocationsWithAmountFilter_thenReturnAllocations() throws Exception {
-        mockMvc.perform(
-                get("/allocations?amountToShow=1")
-                        .with(httpBasic("manager", "1234"))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void getAllAllocationsWithStatusAndOrderingFilter_thenReturnAllocations() throws Exception {
-        mockMvc.perform(
-                get("/allocations?status=ACTIVE&ordering=ASCENDING")
-                        .with(httpBasic("manager", "1234"))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
 }
