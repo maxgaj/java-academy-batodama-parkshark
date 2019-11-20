@@ -1,6 +1,7 @@
 package be.cm.batodama.parkshark.service.allocation;
 
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
+import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
 import be.cm.batodama.parkshark.service.allocation.exception.InvalidAllocationException;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +36,11 @@ public class AllocationValidator {
     }
 
     private void licensePlateIsAccepted(Allocation allocation) {
-        if (!allocation.getLicencePlateNumber().equals(allocation.getMember().getLicencePlateNumber())){
-            throw new InvalidAllocationException("Provided License Plate is not authorize for this member");
+        if (!allocation.getMember().getMembershipLevel().equals(MembershipLevel.GOLD)){
+            if (!allocation.getLicencePlateNumber().equals(allocation.getMember().getLicencePlateNumber())) {
+                throw new InvalidAllocationException("Provided License Plate is not authorize for this member");
+            }
         }
-        //TODO add level
     }
 
     private void parkingLotIsNotFull(Allocation allocation) {
