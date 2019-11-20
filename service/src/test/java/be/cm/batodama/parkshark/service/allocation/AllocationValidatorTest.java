@@ -1,6 +1,8 @@
 package be.cm.batodama.parkshark.service.allocation;
 
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
+import be.cm.batodama.parkshark.domain.division.Director;
+import be.cm.batodama.parkshark.domain.division.Division;
 import be.cm.batodama.parkshark.domain.member.Member;
 import be.cm.batodama.parkshark.domain.membershiplevel.MembershipLevel;
 import be.cm.batodama.parkshark.domain.parking.*;
@@ -18,13 +20,15 @@ class AllocationValidatorTest {
     private Member validGoldMember;
     private ParkingLot validParkingLot;
     private Allocation validAllocation;
+    private Division division;
 
 
     @BeforeEach
     void setUp() {
         validBronzeMember = new Member("username", "", "", "", "","","","","coucou@hello.be", "", "1ABC123", "", LocalDateTime.now(), MembershipLevel.BRONZE);
         validGoldMember = new Member("username", "", "", "", "","","","","coucou@hello.be", "", "1ABC123", "", LocalDateTime.now(), MembershipLevel.GOLD);
-        validParkingLot = new ParkingLot("parkingName", ParkingLotCategory.ABOVE_GROUND, new Address("", "", new PostCode("", "")), 0, new ParkingLotContactPerson("", "coucou@hello.be", "", "", new Address("", "", new PostCode("", ""))), 0);
+        division = new Division("Main division","Red",new Director("John","Jenkins"),null);
+        validParkingLot = new ParkingLot("parkingName", ParkingLotCategory.ABOVE_GROUND, new Address("", "", new PostCode("", "")), 0, new ParkingLotContactPerson("", "coucou@hello.be", "", "", new Address("", "", new PostCode("", ""))), 0,division);
         validAllocation = new Allocation(validBronzeMember, validParkingLot, "1ABC123");
 
     }

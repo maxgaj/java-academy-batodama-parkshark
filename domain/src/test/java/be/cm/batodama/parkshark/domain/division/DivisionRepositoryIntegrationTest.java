@@ -21,11 +21,6 @@ class DivisionRepositoryIntegrationTest {
     private DivisionRepository divisionRepository;
 
     @Test
-    void trueIsTrue() {
-        Assertions.assertTrue(true);
-    }
-
-    @Test
     void makeADivisionAndSaveToTheRepositoryAndConfirmDataInsideRepositoryIsEqualToInputData() {
         // first part of the test create a division and save in the repository
 
@@ -38,7 +33,7 @@ class DivisionRepositoryIntegrationTest {
         divisionRepository.save(division1);
 
         // second part of the test get first division out of the repository through the get all method
-        Division division2 = divisionRepository.findAll().get(0);
+        Division division2 = divisionRepository.findAll().get(divisionRepository.findAll().size()-1);
 
         Assertions.assertEquals("Name",division2.getName());
         Assertions.assertEquals("Original Name",division2.getOriginalName());
