@@ -4,27 +4,27 @@ import be.cm.batodama.parkshark.ApiTestApplication;
 import be.cm.batodama.parkshark.api.parking.AddressDto;
 import be.cm.batodama.parkshark.api.parking.ParkingLotDto;
 import be.cm.batodama.parkshark.api.parking.PostCodeDto;
-import be.cm.batodama.parkshark.domain.parking.Address;
-import be.cm.batodama.parkshark.domain.parking.ParkingLot;
-import be.cm.batodama.parkshark.domain.parking.ParkingLotContactPerson;
-import be.cm.batodama.parkshark.domain.parking.PostCode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.io.UnsupportedEncodingException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -94,6 +94,103 @@ class AllocationControllerIntegrationTest {
                         .with(httpBasic("manager", "1234"))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void stopAllocation_givenValidCredentialAndValidData_thenReturnCorrectJSON() throws Exception {
+        MvcResult result = mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        Long id = findIdFromResponse(result);
+
+        mockMvc.perform(
+                put("/allocations?allocationId="+id)
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void stopAllocation_givenAlreadyStoppedAllocation_thenBadRequest() throws Exception {
+        MvcResult result = mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        Long id = findIdFromResponse(result);
+
+        mockMvc.perform(
+                put("/allocations?allocationId="+id)
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(
+                put("/allocations?allocationId="+id)
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void stopAllocation_givenInvalidUser_thenReturnCorrectJSON() throws Exception {
+        MvcResult result = mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        Long id = findIdFromResponse(result);
+
+        mockMvc.perform(
+                put("/allocations?allocationId="+id)
+                        .with(httpBasic("member2", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void stopAllocation_givenNonExistingData_thenReturnCorrectJSON() throws Exception {
+        mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(
+                put("/allocations?allocationId=10000")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void stopAllocation_givenInvalidData_thenReturnCorrectJSON() throws Exception {
+        mockMvc.perform(
+                post("/allocations?parkingId=1&licensePlate=1ABC123")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(
+                put("/allocations?allocationId=abcd")
+                        .with(httpBasic("member", "1234"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    private Long findIdFromResponse(MvcResult result) throws UnsupportedEncodingException {
+        Pattern pattern = Pattern.compile("(\\d+)");
+        Matcher matcher = pattern.matcher(result.getResponse().getContentAsString());
+        matcher.find();
+        return Long.parseLong(matcher.group());
     }
 
     @Test
