@@ -79,46 +79,22 @@ public class AllocationController {
         return allocationMapper.mapToStoppedAllocationDto(stoppedAllocation);
     }
 
-    @ApiOperation(value="Get all parking spot allocation")
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(value="Get all parking spot allocations")
+    @GetMapping(params = {"amountToShow", "status", "ordering"}, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_MANAGER')")
-    public List<AllocationDto> getAllAllocations(){
-        return allocationRepository
-                .findAll()
-                .stream()
-                .sorted(Comparator.comparing(Allocation::getStartTime))
-                .map(allocation -> allocationMapper.mapToDto(allocation))
-                .collect(Collectors.toList());
-    }
+    public List<StartedAllocationsDto> getAllAllocations(@RequestParam(required = false) Long amountToShow,
+                                                         @RequestParam(required = false) String status,
+                                                         @RequestParam(required = false) String ordering){
 
-    @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
-    @GetMapping(params = {"amountToShow"},produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
-    public List<AllocationDto> getAllAllocationsFilteredOnAmountToShow(@RequestParam long amountToShow){
-        return allocationRepository.findAll()
+        List<Allocation> allocation = allocationRepository.findAll()
                 .stream()
-                .filter(allocation -> allocation.getStartTime() != null)
                 .sorted(Comparator.comparing(Allocation::getStartTime))
-                .limit(amountToShow)
-                .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
                 .collect(Collectors.toList());
-    }
 
-    @ApiOperation(value="Get all parking spot allocation filtered on status")
-    @GetMapping(params = {"status", "ordering"},produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
-    public List<AllocationDto> getAllAllocationsFilteredOnStatusAscOrDesc(@RequestParam String status, @RequestParam String ordering){
-        List<AllocationDto> allocationDtos = allocationRepository.findAll()
-                .stream()
-                .filter(allocation -> allocation.getStatus() == AllocationStatus.valueOf(status))
-                .sorted(Comparator.comparing(Allocation::getStartTime))
-                .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
+        return allocationService.filterAllocations(amountToShow, status, ordering, allocation).stream()
+                .map(allocationToMap -> allocationMapper.mapToDto(allocationToMap))
                 .collect(Collectors.toList());
-        if (ordering.toUpperCase().equals("DESCENDING")) Collections.reverse(allocationDtos);
-        return  allocationDtos;
     }
 
     @ExceptionHandler({IllegalArgumentException.class, InvalidAllocationException.class})

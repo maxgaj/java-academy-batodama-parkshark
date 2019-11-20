@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -35,14 +39,33 @@ public class AllocationService {
 
     private Allocation getAllocationFromId(long allocationId) {
         return allocationRepository.findById(allocationId)
-                    .orElseThrow(() -> new IllegalArgumentException(format("Invalid Allocation Id: no allocation for Id \"%s\"", allocationId)));
+                .orElseThrow(() -> new IllegalArgumentException(format("Invalid Allocation Id: no allocation for Id \"%s\"", allocationId)));
     }
 
     private Member getMemberByUsername(String username) {
         Member member = memberRepository.findOneByUsername(username);
-        if (member == null){
+        if (member == null) {
             throw new IllegalArgumentException(format("Invalid username: username %s not found", username));
         }
         return member;
+    }
+
+    public List<Allocation> filterAllocations(Long amountToShow, String status, String ordering, List<Allocation> allocation) {
+        List<Allocation> allocationsToReturn = allocation;
+
+        if (ordering.toUpperCase().equals("DESCENDING")) {
+            Collections.reverse(allocationsToReturn);
+        }
+        if (!status.equals("")) {
+            allocationsToReturn = allocationsToReturn.stream()
+                    .filter(allocationDto -> allocationDto.getStatus().equals(status))
+                    .collect(Collectors.toList());
+        }
+        if (amountToShow != null) {
+            allocationsToReturn = allocationsToReturn.stream()
+                    .limit(amountToShow)
+                    .collect(Collectors.toList());
+        }
+        return allocationsToReturn;
     }
 }
