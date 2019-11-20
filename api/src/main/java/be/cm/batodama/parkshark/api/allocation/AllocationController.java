@@ -1,5 +1,6 @@
 package be.cm.batodama.parkshark.api.allocation;
 
+import be.cm.batodama.parkshark.api.allocation.dtos.AllocationDto;
 import be.cm.batodama.parkshark.api.allocation.dtos.StartedAllocationsDto;
 import be.cm.batodama.parkshark.api.division.DivisionController;
 import be.cm.batodama.parkshark.domain.allocation.Allocation;
@@ -16,6 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "Parking spots allocations")
 @RestController
@@ -52,5 +57,51 @@ public class AllocationController {
         Allocation savedAllocation = allocationRepository.saveAndFlush(allocation);
         return allocationMapper.mapToStartedAllocationDto(savedAllocation);
 
+    }
+
+    @ApiOperation(value="Get all parking spot allocation")
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    public List<AllocationDto> getAllAllocations(){
+        List<AllocationDto> allocationDtos = allocationRepository
+                .findAll()
+                .stream()
+                .filter(allocation -> allocation.getStartTime() != null)
+                .sorted(Comparator.comparing(Allocation::getStartTime))
+                .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
+                .collect(Collectors.toList());
+       return  allocationDtos;
+    }
+
+    @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
+    @GetMapping(params = {"amountToShow"},produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    public List<AllocationDto> getAllAllocationsFilteredOnAmountToShow(){
+        List<AllocationDto> allocationDtos = allocationRepository
+                .findAll()
+                .stream()
+                .filter(allocation -> allocation.getStartTime() != null)
+                .sorted(Comparator.comparing(Allocation::getStartTime))
+                .limit(100)
+                .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
+                .collect(Collectors.toList());
+        return  allocationDtos;
+    }
+
+    @ApiOperation(value="Get all parking spot allocation filtered on amount to show")
+    @GetMapping(params = {"Status", "ordering"},produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_MANAGER')")
+    public List<AllocationDto> getAllAllocationsFilteredOnStatusAscOrDesc(@RequestParam String status, @RequestParam String ordering){
+        List<AllocationDto> allocationDtos = allocationRepository
+                .findAll()
+                .stream()
+                .filter(allocation -> allocation.getStartTime() != null)
+                .sorted(Comparator.comparing(Allocation::getStartTime))
+                .map(allocation -> allocationMapper.mapToStartedAllocationDto(allocation))
+                .collect(Collectors.toList());
+        return  allocationDtos;
     }
 }

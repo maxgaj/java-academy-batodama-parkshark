@@ -1,8 +1,6 @@
 package be.cm.batodama.parkshark.api.allocation.dtos;
 
-import be.cm.batodama.parkshark.domain.allocation.Allocation;
-
-public class StartedAllocationsDto {
+public class StartedAllocationsDto implements AllocationDto {
 
     private long id;
     private AllocationMemberDto memberDto;
