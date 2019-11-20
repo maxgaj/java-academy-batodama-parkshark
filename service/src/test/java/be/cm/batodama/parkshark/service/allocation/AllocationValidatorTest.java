@@ -51,4 +51,21 @@ class AllocationValidatorTest {
         Allocation allocation = new Allocation(validMember, validParkingLot, "9XYZ789");
         Assertions.assertThatThrownBy(() ->allocationValidator.validate(allocation)).isInstanceOf(InvalidAllocationException.class);
     }
+
+    @Test
+    void validateToStop_givenNull_thenThrowsException() {
+        Allocation allocation = null;
+        Assertions.assertThatThrownBy(() ->allocationValidator.validateToStop(allocation, validMember)).isInstanceOf(InvalidAllocationException.class);
+    }
+
+    @Test
+    void validateToStop_givenNullMember_thenThrowsException() {
+        Assertions.assertThatThrownBy(() ->allocationValidator.validateToStop(validAllocation, null)).isInstanceOf(InvalidAllocationException.class);
+    }
+
+    @Test
+    void validateToStop_givenStoppedException_thenThrowsException() {
+        validAllocation.setStopTime(LocalDateTime.now());
+        Assertions.assertThatThrownBy(() ->allocationValidator.validateToStop(validAllocation, validMember)).isInstanceOf(InvalidAllocationException.class);
+    }
 }
