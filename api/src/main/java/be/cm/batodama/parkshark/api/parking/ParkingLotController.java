@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Api(tags = "Parking lots")
 @RestController
-@RequestMapping("/parkingLots")
+@RequestMapping("/parkinglots")
 public class ParkingLotController {
 
     private final ParkingLotService parkingLotService;

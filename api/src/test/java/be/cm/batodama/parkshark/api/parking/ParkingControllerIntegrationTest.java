@@ -13,7 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
+import javax.transaction.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,7 +38,6 @@ class ParkingControllerIntegrationTest {
     private EntityManager entityManager;
 
     @Test
-    @WithMockUser(authorities = "ROLE_MANAGER")
     void givenParkingLotDto_whenCreatingParkingLot_thenReturnedParkingLotDtoEqualsOriginal() throws Exception {
         entityManager.persist(new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
                 new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))));
@@ -48,7 +49,7 @@ class ParkingControllerIntegrationTest {
                 100,
                 new Division("Name", "Original Name", new Director("Seymour", "Skinner"), null));
 
-        mockMvc.perform(post("/parkingLots")
+        mockMvc.perform(post("/parkinglots")
                 .content(asJsonString(originalParkingLotDto))
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -85,7 +86,7 @@ class ParkingControllerIntegrationTest {
 //                                        new Address("Street Test", "1",
 //                                        new PostCode("Post Test", "Leuven"))), 120));
 //
-//        mockMvc.perform(post("/parkingLots")
+//        mockMvc.perform(post("/parkinglots")
 //                .content(asJsonString(originalParkingLotDto))
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .characterEncoding("UTF-8")
@@ -96,7 +97,7 @@ class ParkingControllerIntegrationTest {
     @Test
     @WithMockUser(authorities = "ROLE_MANAGER")
     void whenGettingAllParkingLot_thenReturnedAllParkingLot() throws Exception {
-        mockMvc.perform(get("/parkingLots")
+        mockMvc.perform(get("/parkinglots")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))
@@ -114,7 +115,7 @@ class ParkingControllerIntegrationTest {
                 10,
                 new Division("Name", "Original Name", new Director("Seymour", "Skinner"), null)));
 
-        mockMvc.perform(get("/parkingLots/1")
+        mockMvc.perform(get("/parkinglots/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .accept(MediaType.APPLICATION_JSON))

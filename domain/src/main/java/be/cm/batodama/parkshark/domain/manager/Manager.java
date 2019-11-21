@@ -15,7 +15,7 @@ public class Manager extends BaseUser {
     public Manager() {
     }
 
-    public Manager(String username, String password, Role role, String firstName, String lastName) {
+    public Manager(String username, String password, String firstName, String lastName) {
         super(username, password, Role.ROLE_MANAGER);
         this.firstName = firstName;
         this.lastName = lastName;

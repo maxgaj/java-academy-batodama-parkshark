@@ -1,8 +1,16 @@
 package be.cm.batodama.parkshark.domain.parking;
 
+import be.cm.batodama.parkshark.domain.allocation.Allocation;
+import be.cm.batodama.parkshark.domain.allocation.AllocationStatus;
+
+import be.cm.batodama.parkshark.domain.division.Division;
+
+import be.cm.batodama.parkshark.domain.allocation.Allocation;
 import be.cm.batodama.parkshark.domain.division.Division;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -38,6 +46,9 @@ public class ParkingLot {
     @ManyToOne
     @JoinColumn(name = "DIVISION_ID")
     private Division division;
+
+    @OneToMany(mappedBy ="parkingLot")
+    private List<Allocation> allocations = new ArrayList<>();
 
     public ParkingLot() {
     }
@@ -80,6 +91,10 @@ public class ParkingLot {
         return allocationPricePerHour;
     }
 
+    public List<Allocation> getAllocations() {
+        return allocations;
+    }
+
     public Division getDivision() {
         return division;
     }
@@ -100,6 +115,13 @@ public class ParkingLot {
     @Override
     public String toString() {
         return "Parking lot: " + id + ", " + parkingName + ", " + parkingCategory + ", " + parkingMaxSize + ", " + parkingLotContactPerson + ", " + address + ", " + allocationPricePerHour;
+    }
+
+    public boolean isFull() {
+        long occupiedSpots = getAllocations().stream()
+                .filter((allocation -> allocation.getStatus() == AllocationStatus.ACTIVE))
+                .count();
+        return occupiedSpots >= parkingMaxSize;
     }
 }
 

@@ -41,11 +41,11 @@ public class MemberRepositoryIntegrationTest {
                         "belgium",
                         LocalDateTime.of(2019,11,19,23,59)
                 );
-        memberRepository.save(member1);
+        Member savedMember = memberRepository.save(member1);
 
         // second part of the test
         // taking first member from the repository by the get All
-        Member member2 = memberRepository.findAll().get(1);
+        Member member2 = memberRepository.findById(savedMember.getId()).get();
 
         Assertions.assertEquals("myFirstName",member2.getFistName());
         Assertions.assertEquals("myLastName",member2.getLastName());
