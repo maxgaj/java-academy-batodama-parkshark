@@ -38,6 +38,7 @@ class ParkingControllerIntegrationTest {
     private EntityManager entityManager;
 
     @Test
+    @WithMockUser(authorities = "ROLE_MANAGER")
     void givenParkingLotDto_whenCreatingParkingLot_thenReturnedParkingLotDtoEqualsOriginal() throws Exception {
         entityManager.persist(new ParkingLotContactPerson("Niels", "niels@myemail.com", "484848484", "011848532",
                 new Address("Street Test", "1", new PostCode("Post Test", "Leuven"))));

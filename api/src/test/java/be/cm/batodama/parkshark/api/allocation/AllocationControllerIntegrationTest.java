@@ -56,7 +56,7 @@ class AllocationControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(roles = "ROLE_MANAGER")
+    @WithMockUser(authorities = "ROLE_MANAGER")
     void startAllocation_givenValidCredentialAndValidData_thenReturnCorrectJSON() throws Exception {
         mockMvc.perform(
                 post("/allocations?parkingId=1&licensePlate=1ABC123")
